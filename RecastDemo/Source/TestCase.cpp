@@ -29,11 +29,10 @@
 #include "imgui.h"
 #include "PerfTimer.h"
 
-#include <gl/GL.h>
-#include <gl/GLU.h>
-
 #ifdef WIN32
 #define snprintf _snprintf
+#include <gl/GL.h>
+#include <gl/GLU.h>
 #endif
 
 TestCase::TestCase() :

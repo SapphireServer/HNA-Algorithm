@@ -36,12 +36,12 @@
 #include "Sample_TempObstacles.h"
 #include "Sample_Debug.h"
 
-#include <gl/GL.h>
-#include <gl/GLU.h>
-
 #ifdef WIN32
 #	define snprintf _snprintf
 #	define putenv _putenv
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
 #endif
 
 struct SampleItem
@@ -314,20 +314,6 @@ int main(int /*argc*/, char** /*argv*/)
 							origry = ry;
 						}
 					}	
-					else if (event.button.button == SDL_MOUSEBUTTONUP)
-					{
-						if (mouseOverMenu)
-							mscroll--;
-						else
-							scrollZoom -= 1.0f;
-					}
-					else if (event.button.button == SDL_MOUSEBUTTONDOWN)
-					{
-						if (mouseOverMenu)
-							mscroll++;
-						else
-							scrollZoom += 1.0f;
-					}
 					break;
 					
 				case SDL_MOUSEBUTTONUP:
@@ -368,7 +354,22 @@ int main(int /*argc*/, char** /*argv*/)
 							movedDuringRotate = true;
 					}
 					break;
-					
+            case SDL_MOUSEWHEEL:
+               if (event.wheel.y == 1)
+               {
+                  if (mouseOverMenu)
+                     mscroll--;
+                  else
+                     scrollZoom -= 10.0f;
+               }
+               else if (event.wheel.y == -1)
+               {
+                  if (mouseOverMenu)
+                     mscroll++;
+                  else
+                     scrollZoom += 10.0f;
+               }
+               break;
 				case SDL_QUIT:
 					done = true;
 					break;
@@ -487,10 +488,10 @@ int main(int /*argc*/, char** /*argv*/)
 		
 		// Handle keyboard movement.
       const Uint8* keystate = SDL_GetKeyboardState(nullptr);
-		moveW = rcClamp(moveW + dt * 4 * (keystate[SDLK_w] ? 1 : -1), 0.0f, 1.0f);
-		moveS = rcClamp(moveS + dt * 4 * (keystate[SDLK_s] ? 1 : -1), 0.0f, 1.0f);
-		moveA = rcClamp(moveA + dt * 4 * (keystate[SDLK_a] ? 1 : -1), 0.0f, 1.0f);
-		moveD = rcClamp(moveD + dt * 4 * (keystate[SDLK_d] ? 1 : -1), 0.0f, 1.0f);
+		moveW = rcClamp(moveW + dt * 4 * (keystate[SDL_SCANCODE_W] ? 1 : -1), 0.0f, 1.0f);
+		moveS = rcClamp(moveS + dt * 4 * (keystate[SDL_SCANCODE_S] ? 1 : -1), 0.0f, 1.0f);
+		moveA = rcClamp(moveA + dt * 4 * (keystate[SDL_SCANCODE_A] ? 1 : -1), 0.0f, 1.0f);
+		moveD = rcClamp(moveD + dt * 4 * (keystate[SDL_SCANCODE_D] ? 1 : -1), 0.0f, 1.0f);
 		
 		float keybSpeed = 22.0f;
 		if (SDL_GetModState() & KMOD_SHIFT)

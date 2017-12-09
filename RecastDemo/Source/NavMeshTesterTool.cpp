@@ -33,11 +33,10 @@
 #include "DetourDebugDraw.h"
 #include "DetourCommon.h"
 
-#include <gl/GL.h>
-#include <gl/GLU.h>
-
 #ifdef WIN32
 #	define snprintf _snprintf
+#include <gl/GL.h>
+#include <gl/GLU.h>
 #endif
 
 // Uncomment this to dump all the requests in stdout.
