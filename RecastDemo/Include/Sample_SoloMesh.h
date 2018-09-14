@@ -65,7 +65,7 @@ protected:
 	};
 	
 	DrawMode m_drawMode;
-	
+
 	void cleanup();
 		
 public:

@@ -114,6 +114,8 @@ protected:
 	float m_level;
 	float m_merged_polys;
 	
+   bool m_redraw{true};
+
 	SampleTool* m_tool;
 	SampleToolState* m_toolStates[MAX_TOOLS];
 	
@@ -170,6 +172,16 @@ public:
 	void resetCommonSettings();
 	void handleCommonSettings();
 	void handleHierarchySettings();
+
+   void setRedraw(bool watdo)
+   {
+      m_redraw = watdo;
+   }
+
+   bool redraw()
+   {
+      return m_redraw;
+   }
 };
 
 

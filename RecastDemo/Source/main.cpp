@@ -196,6 +196,9 @@ int main(int /*argc*/, char** /*argv*/)
 	
 	glDepthFunc(GL_LEQUAL);
 	
+   GLuint index = glGenLists(1);
+   GLuint index2 = glGenLists(1);
+
 	bool done = false;
 	while(!done)
 	{
@@ -513,13 +516,30 @@ int main(int /*argc*/, char** /*argv*/)
 
 		glEnable(GL_FOG);
 
-		if (sample)
-			sample->handleRender();
-		if (test)
-			test->handleRender();
-		
+      if (sample && sample->redraw())
+      {
+         glNewList(index, GL_COMPILE);
+         glBegin(GL_TRIANGLES);
+         sample->handleRender();
+         glEnd();
+         glEndList();
+      }
+
+      if (test)
+      {
+         glNewList(index2, GL_COMPILE);
+         glBegin(GL_TRIANGLES);
+         test->handleRender();
+         glEnd();
+         glEndList();
+      }
+
+      
 		glDisable(GL_FOG);
 		
+      glCallList(index);
+      glCallList(index2);
+
 		// Render GUI
 		glDisable(GL_DEPTH_TEST);
 		glMatrixMode(GL_PROJECTION);
@@ -615,6 +635,7 @@ int main(int /*argc*/, char** /*argv*/)
 						showLog = true;
 						logScroll = 0;
 					}
+               sample->setRedraw(true);
 					ctx.dumpLog("Build log %s:", meshName);
 					showHierarchy = true;
 					
@@ -637,6 +658,7 @@ int main(int /*argc*/, char** /*argv*/)
 							showLog = true;
 							logScroll = 0;
 						}
+                  sample->setRedraw(true);
 					
 						ctx.dumpLog("Build Hierarchy");
 						// Clear test.
@@ -758,6 +780,11 @@ int main(int /*argc*/, char** /*argv*/)
 				if (sample && geom)
 				{
 					sample->handleMeshChanged(geom);
+               glNewList(index, GL_COMPILE);
+               glBegin(GL_TRIANGLES);
+               sample->handleRender();
+               glEnd();
+               glEndList();
 				}
 
 				if (geom || sample)
@@ -940,7 +967,7 @@ int main(int /*argc*/, char** /*argv*/)
 			imguiEndScrollArea();
 		}
 		
-		slideShow.updateAndDraw(dt, (float)width, (float)height);
+		//slideShow.updateAndDraw(dt, (float)width, (float)height);
 		
 		// Marker
 		if (mposSet && gluProject((GLdouble)mpos[0], (GLdouble)mpos[1], (GLdouble)mpos[2],

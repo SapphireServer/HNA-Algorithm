@@ -984,21 +984,21 @@ void Sample_TempObstacles::handleDebugMode()
 	
 	imguiLabel("Draw");
 	if (imguiCheck("Input Mesh", m_drawMode == DRAWMODE_MESH, valid[DRAWMODE_MESH]))
-		m_drawMode = DRAWMODE_MESH;
+		setRedraw(m_drawMode = DRAWMODE_MESH);
 	if (imguiCheck("Navmesh", m_drawMode == DRAWMODE_NAVMESH, valid[DRAWMODE_NAVMESH]))
-		m_drawMode = DRAWMODE_NAVMESH;
+		setRedraw(m_drawMode = DRAWMODE_NAVMESH);
 	if (imguiCheck("Navmesh Invis", m_drawMode == DRAWMODE_NAVMESH_INVIS, valid[DRAWMODE_NAVMESH_INVIS]))
-		m_drawMode = DRAWMODE_NAVMESH_INVIS;
+		setRedraw(m_drawMode = DRAWMODE_NAVMESH_INVIS);
 	if (imguiCheck("Navmesh Trans", m_drawMode == DRAWMODE_NAVMESH_TRANS, valid[DRAWMODE_NAVMESH_TRANS]))
-		m_drawMode = DRAWMODE_NAVMESH_TRANS;
+		setRedraw(m_drawMode = DRAWMODE_NAVMESH_TRANS);
 	if (imguiCheck("Navmesh BVTree", m_drawMode == DRAWMODE_NAVMESH_BVTREE, valid[DRAWMODE_NAVMESH_BVTREE]))
-		m_drawMode = DRAWMODE_NAVMESH_BVTREE;
+		setRedraw(m_drawMode = DRAWMODE_NAVMESH_BVTREE);
 	if (imguiCheck("Navmesh Nodes", m_drawMode == DRAWMODE_NAVMESH_NODES, valid[DRAWMODE_NAVMESH_NODES]))
-		m_drawMode = DRAWMODE_NAVMESH_NODES;
+		setRedraw(m_drawMode = DRAWMODE_NAVMESH_NODES);
 	if (imguiCheck("Navmesh Portals", m_drawMode == DRAWMODE_NAVMESH_PORTALS, valid[DRAWMODE_NAVMESH_PORTALS]))
-		m_drawMode = DRAWMODE_NAVMESH_PORTALS;
+		setRedraw(m_drawMode = DRAWMODE_NAVMESH_PORTALS);
 	if (imguiCheck("Cache Bounds", m_drawMode == DRAWMODE_CACHE_BOUNDS, valid[DRAWMODE_CACHE_BOUNDS]))
-		m_drawMode = DRAWMODE_CACHE_BOUNDS;
+		setRedraw(m_drawMode = DRAWMODE_CACHE_BOUNDS);
 	
 	if (unavail)
 	{
@@ -1010,10 +1010,12 @@ void Sample_TempObstacles::handleDebugMode()
 
 void Sample_TempObstacles::handleRender()
 {
-	if (!m_geom || !m_geom->getMesh())
+	if (!m_geom || !m_geom->getMesh() || !m_redraw)
 		return;
 	
-	DebugDrawGL dd;
+   setRedraw(false);
+   std::unique_ptr<DebugDrawGL> pDD = std::make_unique<DebugDrawGL>();
+   DebugDrawGL* dd = pDD.get();
 
 	const float texScale = 1.0f / (m_cellSize * 10.0f);
 	
@@ -1021,17 +1023,17 @@ void Sample_TempObstacles::handleRender()
 	if (m_drawMode != DRAWMODE_NAVMESH_TRANS)
 	{
 		// Draw mesh
-		duDebugDrawTriMeshSlope(&dd, m_geom->getMesh()->getVerts(), m_geom->getMesh()->getVertCount(),
+		duDebugDrawTriMeshSlope(dd, m_geom->getMesh()->getVerts(), m_geom->getMesh()->getVertCount(),
 								m_geom->getMesh()->getTris(), m_geom->getMesh()->getNormals(), m_geom->getMesh()->getTriCount(),
 								m_agentMaxSlope, texScale);
-		m_geom->drawOffMeshConnections(&dd);
+		m_geom->drawOffMeshConnections(dd);
 	}
 	
 	if (m_tileCache && m_drawMode == DRAWMODE_CACHE_BOUNDS)
-		drawTiles(&dd, m_tileCache);
+		drawTiles(dd, m_tileCache);
 	
 	if (m_tileCache)
-		drawObstacles(&dd, m_tileCache);
+		drawObstacles(dd, m_tileCache);
 	
 	
 	glDepthMask(GL_FALSE);
@@ -1039,7 +1041,7 @@ void Sample_TempObstacles::handleRender()
 	// Draw bounds
 	const float* bmin = m_geom->getMeshBoundsMin();
 	const float* bmax = m_geom->getMeshBoundsMax();
-	duDebugDrawBoxWire(&dd, bmin[0],bmin[1],bmin[2], bmax[0],bmax[1],bmax[2], duRGBA(255,255,255,128), 1.0f);
+	duDebugDrawBoxWire(dd, bmin[0],bmin[1],bmin[2], bmax[0],bmax[1],bmax[2], duRGBA(255,255,255,128), 1.0f);
 	
 	// Tiling grid.
 	int gw = 0, gh = 0;
@@ -1047,7 +1049,7 @@ void Sample_TempObstacles::handleRender()
 	const int tw = (gw + (int)m_tileSize-1) / (int)m_tileSize;
 	const int th = (gh + (int)m_tileSize-1) / (int)m_tileSize;
 	const float s = m_tileSize*m_cellSize;
-	duDebugDrawGridXZ(&dd, bmin[0],bmin[1],bmin[2], tw,th, s, duRGBA(0,0,0,64), 1.0f);
+	duDebugDrawGridXZ(dd, bmin[0],bmin[1],bmin[2], tw,th, s, duRGBA(0,0,0,64), 1.0f);
 		
 	if (m_navMesh && m_navQuery &&
 		(m_drawMode == DRAWMODE_NAVMESH ||
@@ -1058,20 +1060,20 @@ void Sample_TempObstacles::handleRender()
 		 m_drawMode == DRAWMODE_NAVMESH_INVIS))
 	{
 		if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
-			duDebugDrawNavMeshWithClosedList(&dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags/*|DU_DRAWNAVMESH_COLOR_TILES*/);
+			duDebugDrawNavMeshWithClosedList(dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags/*|DU_DRAWNAVMESH_COLOR_TILES*/);
 		if (m_drawMode == DRAWMODE_NAVMESH_BVTREE)
-			duDebugDrawNavMeshBVTree(&dd, *m_navMesh);
+			duDebugDrawNavMeshBVTree(dd, *m_navMesh);
 		if (m_drawMode == DRAWMODE_NAVMESH_PORTALS)
-			duDebugDrawNavMeshPortals(&dd, *m_navMesh);
+			duDebugDrawNavMeshPortals(dd, *m_navMesh);
 		if (m_drawMode == DRAWMODE_NAVMESH_NODES)
-			duDebugDrawNavMeshNodes(&dd, *m_navQuery);
-		duDebugDrawNavMeshPolysWithFlags(&dd, *m_navMesh, SAMPLE_POLYFLAGS_DISABLED, duRGBA(0,0,0,128));
+			duDebugDrawNavMeshNodes(dd, *m_navQuery);
+		duDebugDrawNavMeshPolysWithFlags(dd, *m_navMesh, SAMPLE_POLYFLAGS_DISABLED, duRGBA(0,0,0,128));
 	}
 	
 	
 	glDepthMask(GL_TRUE);
 		
-	m_geom->drawConvexVolumes(&dd);
+	m_geom->drawConvexVolumes(dd);
 	
 	if (m_tool)
 		m_tool->handleRender();
@@ -1082,9 +1084,11 @@ void Sample_TempObstacles::handleRender()
 
 void Sample_TempObstacles::renderCachedTile(const int tx, const int ty, const int type)
 {
-	DebugDrawGL dd;
+   std::unique_ptr<DebugDrawGL> pDD = std::make_unique<DebugDrawGL>();
+   DebugDrawGL* dd = pDD.get();
+
 	if (m_tileCache)
-		drawDetail(&dd,m_tileCache,tx,ty,type);
+		drawDetail(dd,m_tileCache,tx,ty,type);
 }
 
 void Sample_TempObstacles::renderCachedTileOverlay(const int tx, const int ty, double* proj, double* model, int* view)

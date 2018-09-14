@@ -86,7 +86,9 @@ void Sample::handleRender()
 {
 	if (!m_geom)
 		return;
-	
+   if (!m_redraw)
+      return;
+   setRedraw(false);
 	DebugDrawGL dd;
 		
 	// Draw mesh
@@ -105,6 +107,7 @@ void Sample::handleRenderOverlay(double* /*proj*/, double* /*model*/, int* /*vie
 void Sample::handleMeshChanged(InputGeom* geom)
 {
 	m_geom = geom;
+   setRedraw(true);
 }
 
 const float* Sample::getBoundsMin()
