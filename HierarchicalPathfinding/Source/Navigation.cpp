@@ -637,7 +637,7 @@ void Navigation::mergeNodes()
 	idxtype* xadj = (idxtype*)dtAlloc( (parentGraph.numNodes+1)*sizeof(idxtype), DT_ALLOC_TEMP );
 	idxtype* adjncy = (idxtype*)dtAlloc( maxLinkCount*2*sizeof(idxtype), DT_ALLOC_TEMP );
 	idxtype* part = (idxtype*)dtAlloc( parentGraph.numNodes * sizeof(idxtype), DT_ALLOC_TEMP );
-
+   memset(part, 1, parentGraph.numNodes * sizeof(idxtype));
 	//get parameters
 	int xID = 0;
 	int adjID = 0;
