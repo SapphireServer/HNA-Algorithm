@@ -1229,7 +1229,7 @@ void Navigation::checkPartition(int* part, const int numNodes, const int numPart
 	for(int i=0; i < numNodes; i++)
 		newPart[i] = -1;
 
-	for(int i=0; i < numNodes; i++)
+	for(int i=0; i < numParts; i++)
 	{
 		if( newPart[i] != -1 )
 			continue;
@@ -1247,7 +1247,7 @@ void Navigation::checkPartition(int* part, const int numNodes, const int numPart
 	}
 
 	memcpy(part, newPart, sizeof(int)*numNodes );
-	dtFree(newPart );
+	dtFree( newPart );
 	dtFree( used );
 }
 

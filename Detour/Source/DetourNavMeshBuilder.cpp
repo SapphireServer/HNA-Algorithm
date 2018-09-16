@@ -255,8 +255,6 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 {
 	if (params->nvp > DT_VERTS_PER_POLYGON)
 		return false;
-	if (params->vertCount >= 0xffff)
-		return false;
 	if (!params->vertCount || !params->verts)
 		return false;
 	if (!params->polyCount || !params->polys)

@@ -108,131 +108,127 @@
 * Function prototypes 
 *-------------------------------------------------------------------------*/
 
-#if !defined(__cdecl)
-  #define __cdecl
-#endif
 
 
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void __cdecl METIS_EstimateMemory(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *numflag, 
+void  METIS_EstimateMemory(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *numflag, 
                    idxtype *optype, idxtype *nbytes);
 
-void __cdecl METIS_PartGraphKway(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt, 
+void  METIS_PartGraphKway(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt, 
                    idxtype *adjwgt, idxtype *wgtflag, idxtype *numflag, idxtype *nparts, idxtype *options, 
                    idxtype *edgecut, idxtype *part); 
 
-void __cdecl METIS_WPartGraphKway(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt, 
+void  METIS_WPartGraphKway(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt, 
                    idxtype *adjwgt, idxtype *wgtflag, idxtype *numflag, idxtype *nparts, float *tpwgts, 
                    idxtype *options, idxtype *edgecut, idxtype *part); 
 
-void __cdecl METIS_PartGraphVKway(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
+void  METIS_PartGraphVKway(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
                    idxtype *vsize, idxtype *wgtflag, idxtype *numflag, idxtype *nparts, idxtype *options, 
                    idxtype *volume, idxtype *part);
 
-void __cdecl METIS_WPartGraphVKway(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
+void  METIS_WPartGraphVKway(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
                    idxtype *vsize, idxtype *wgtflag, idxtype *numflag, idxtype *nparts, float *tpwgts, 
                    idxtype *options, idxtype *volume, idxtype *part);
 
-idxtype  __cdecl METIS_MeshToDualCount(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *elms, idxtype *etype,
+idxtype   METIS_MeshToDualCount(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *elms, idxtype *etype,
                    idxtype *numflag);
 
-void __cdecl METIS_MeshToDual(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *elms, idxtype *etype, 
+void  METIS_MeshToDual(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *elms, idxtype *etype, 
                    idxtype *numflag,  idxtype *dxadj, idxtype *dadjncy);
 
-idxtype  __cdecl METIS_MixedMeshToDualCount(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype * elms, 
+idxtype   METIS_MixedMeshToDualCount(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype * elms, 
                    idxtype *etype, idxtype *numflag, idxtype *conmat, idxtype custom);
 
-void __cdecl METIS_MixedMeshToDual(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *elms, 
+void  METIS_MixedMeshToDual(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *elms, 
                    idxtype *etype, idxtype *numflag,idxtype *dxadj, idxtype *dadjncy,idxtype *conmat,
                    idxtype custom);
 
-void __cdecl METIS_MeshToNodal(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype, idxtype *numflag, 
+void  METIS_MeshToNodal(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype, idxtype *numflag, 
                    idxtype *dxadj, idxtype *dadjncy);
 
-void __cdecl METIS_MixedMeshToNodal(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype,
+void  METIS_MixedMeshToNodal(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype,
                    idxtype *numflag, idxtype *dxadj, idxtype *dadjncy);
 
-void __cdecl METIS_PartMeshNodal(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype, idxtype *numflag,
+void  METIS_PartMeshNodal(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype, idxtype *numflag,
                    idxtype *nparts, idxtype *edgecut, idxtype *epart, idxtype *npart);
 
-void __cdecl METIS_PartMixedMeshNodal(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype, idxtype *numflag,
+void  METIS_PartMixedMeshNodal(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype, idxtype *numflag,
                    idxtype *nparts, idxtype *edgecut, idxtype *epart, idxtype *npart);
 
-void __cdecl METIS_PartMeshDual(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype, idxtype *numflag, 
+void  METIS_PartMeshDual(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype, idxtype *numflag, 
                    idxtype *nparts, idxtype *edgecut, idxtype *epart, idxtype *npart, idxtype wgtflag, 
                    idxtype * vwgt);
 
-void __cdecl METIS_PartMixedMeshDual(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype, idxtype *numflag,  
+void  METIS_PartMixedMeshDual(idxtype *ne, idxtype *nn, idxtype *elmnts, idxtype *etype, idxtype *numflag,  
                    idxtype *nparts, idxtype *edgecut, idxtype *epart, idxtype *npart, idxtype *conmat, 
                    idxtype custom, idxtype wgtflag, idxtype *vwgt);
 
-void __cdecl METIS_mCPartGraphKway(idxtype *nvtxs, idxtype *ncon, idxtype *xadj, idxtype *adjncy, 
+void  METIS_mCPartGraphKway(idxtype *nvtxs, idxtype *ncon, idxtype *xadj, idxtype *adjncy, 
                    idxtype *vwgt, idxtype *adjwgt, idxtype *wgtflag, idxtype *numflag, idxtype *nparts, 
                    float *rubvec, idxtype *options, idxtype *edgecut, idxtype *part);
 
-void __cdecl METIS_mCPartGraphRecursive(idxtype *nvtxs, idxtype *ncon, idxtype *xadj, idxtype *adjncy,
+void  METIS_mCPartGraphRecursive(idxtype *nvtxs, idxtype *ncon, idxtype *xadj, idxtype *adjncy,
                    idxtype *vwgt, idxtype *adjwgt, idxtype *wgtflag, idxtype *numflag, idxtype *nparts,
                    idxtype *options, idxtype *edgecut, idxtype *part);
 
-void __cdecl METIS_mCHPartGraphRecursive(idxtype *nvtxs, idxtype *ncon, idxtype *xadj, idxtype *adjncy,
+void  METIS_mCHPartGraphRecursive(idxtype *nvtxs, idxtype *ncon, idxtype *xadj, idxtype *adjncy,
                    idxtype *vwgt, idxtype *adjwgt, idxtype *wgtflag, idxtype *numflag, idxtype *nparts,
                    float *ubvec, idxtype *options, idxtype *edgecut, idxtype *part);
 
-void __cdecl METIS_mCPartGraphRecursiveInternal(idxtype *nvtxs, idxtype *ncon, idxtype *xadj, 
+void  METIS_mCPartGraphRecursiveInternal(idxtype *nvtxs, idxtype *ncon, idxtype *xadj, 
                    idxtype *adjncy, float *nvwgt, idxtype *adjwgt, idxtype *nparts, idxtype *options, 
                    idxtype *edgecut, idxtype *part);
 
-void __cdecl METIS_mCHPartGraphRecursiveInternal(idxtype *nvtxs, idxtype *ncon, idxtype *xadj, 
+void  METIS_mCHPartGraphRecursiveInternal(idxtype *nvtxs, idxtype *ncon, idxtype *xadj, 
                    idxtype *adjncy, float *nvwgt, idxtype *adjwgt, idxtype *nparts, float *ubvec, 
                    idxtype *options, idxtype *edgecut, idxtype *part);
 
-void __cdecl METIS_EdgeND(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *numflag, idxtype *options,
+void  METIS_EdgeND(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *numflag, idxtype *options,
                    idxtype *perm, idxtype *iperm);
 
-void __cdecl METIS_NodeND(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *numflag, idxtype *options,
+void  METIS_NodeND(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *numflag, idxtype *options,
                    idxtype *perm, idxtype *iperm);
 
 
-void __cdecl METIS_NodeWND(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt, idxtype *numflag,
+void  METIS_NodeWND(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt, idxtype *numflag,
                    idxtype *options, idxtype *perm, idxtype *iperm);
 
-void __cdecl METIS_PartGraphKway2(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
+void  METIS_PartGraphKway2(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
                    idxtype *adjwgt, idxtype *wgtflag, idxtype *numflag, idxtype *nparts, idxtype *options, 
                    idxtype *edgecut, idxtype *part);
 
-void __cdecl METIS_WPartGraphKway2(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
+void  METIS_WPartGraphKway2(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
                    idxtype *adjwgt, idxtype *wgtflag, idxtype *numflag, idxtype *nparts, float *tpwgts, 
                    idxtype *options, idxtype *edgecut, idxtype *part);
 
-void __cdecl METIS_NodeNDP(idxtype nvtxs, idxtype *xadj, idxtype *adjncy, idxtype npes, idxtype *options, 
+void  METIS_NodeNDP(idxtype nvtxs, idxtype *xadj, idxtype *adjncy, idxtype npes, idxtype *options, 
                    idxtype *perm, idxtype *iperm, idxtype *sizes);
 
-void __cdecl METIS_NodeComputeSeparator(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
+void  METIS_NodeComputeSeparator(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
                    idxtype *adjwgt, idxtype *options, idxtype *sepsize, idxtype *part);
 
-void __cdecl METIS_EdgeComputeSeparator(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
+void  METIS_EdgeComputeSeparator(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
                    idxtype *adjwgt, idxtype *options, idxtype *sepsize, idxtype *part);
 
-void __cdecl METIS_PartGraphRecursive(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
+void  METIS_PartGraphRecursive(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
                    idxtype *adjwgt, idxtype *wgtflag, idxtype *numflag, idxtype *nparts, idxtype *options, 
                    idxtype *edgecut, idxtype *part);
 
-void __cdecl METIS_WPartGraphRecursive(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
+void  METIS_WPartGraphRecursive(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
                    idxtype *adjwgt, idxtype *wgtflag, idxtype *numflag, idxtype *nparts, float *tpwgts, 
                    idxtype *options, idxtype *edgecut, idxtype *part);
 
-void __cdecl METIS_PartFillGraph(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
+void  METIS_PartFillGraph(idxtype *nvtxs, idxtype *xadj, idxtype *adjncy, idxtype *vwgt,
                    idxtype *adjwgt, idxtype *wgtflag, idxtype *numflag, idxtype *nparts, idxtype *options, 
                    idxtype *edgecut, idxtype *part);
 
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif
 
 
 

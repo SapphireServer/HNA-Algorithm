@@ -1,0 +1,8 @@
+generate like normal with premake
+
+open recastnavigation.sln
+in solution explorer, RecastDemo > Properties > Configuration Manager (at top) > Active Solution Platform (at top) > New > Select x64 > Copy settings from Win32
+
+edit build/[generator]/RecastDemo.vcxproj and replace
+  metis.lib with metis_x64.lib
+  SDL/lib/x86 with SDL/lib/x64

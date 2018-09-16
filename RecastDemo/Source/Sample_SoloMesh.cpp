@@ -736,6 +736,12 @@ bool Sample_SoloMesh::handleHierarchy()
 	// Start the build process.	
 	m_ctx->startTimer(RC_TIMER_TOTAL);
 
+   if (!m_navMesh)
+   {
+      m_ctx->log(RC_LOG_ERROR, "Build NavMesh before Hierarchical Graph.");
+      return false;
+   }
+
 	for (int i = 0; i < m_navMesh->getMaxTiles(); ++i)
 	{
 		const dtMeshTile* tile = m_navMesh->getTile(i);
