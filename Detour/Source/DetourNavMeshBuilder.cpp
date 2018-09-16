@@ -27,13 +27,13 @@
 #include "DetourAlloc.h"
 #include "DetourAssert.h"
 
-static unsigned short MESH_NULL_IDX = 0xffff;
+static unsigned int MESH_NULL_IDX = 0xffff;
 
 
 struct BVItem
 {
-	unsigned short bmin[3];
-	unsigned short bmax[3];
+	unsigned int bmin[3];
+	unsigned int bmax[3];
 	int i;
 };
 
@@ -71,7 +71,7 @@ static int compareItemZ(const void* va, const void* vb)
 }
 
 static void calcExtends(BVItem* items, const int /*nitems*/, const int imin, const int imax,
-						unsigned short* bmin, unsigned short* bmax)
+						unsigned int* bmin, unsigned int* bmax)
 {
 	bmin[0] = items[imin].bmin[0];
 	bmin[1] = items[imin].bmin[1];
@@ -94,10 +94,10 @@ static void calcExtends(BVItem* items, const int /*nitems*/, const int imin, con
 	}
 }
 
-inline int longestAxis(unsigned short x, unsigned short y, unsigned short z)
+inline int longestAxis(unsigned int x, unsigned int y, unsigned int z)
 {
 	int	axis = 0;
-	unsigned short maxVal = x;
+	unsigned int maxVal = x;
 	if (y > maxVal)
 	{
 		axis = 1;
@@ -169,8 +169,8 @@ static void subdivide(BVItem* items, int nitems, int imin, int imax, int& curNod
 	}
 }
 
-static int createBVTree(const unsigned short* verts, const int /*nverts*/,
-						const unsigned short* polys, const int npolys, const int nvp,
+static int createBVTree(const unsigned int* verts, const int /*nverts*/,
+						const unsigned int* polys, const int npolys, const int nvp,
 						const float cs, const float ch,
 						const int /*nnodes*/, dtBVNode* nodes)
 {
@@ -181,7 +181,7 @@ static int createBVTree(const unsigned short* verts, const int /*nverts*/,
 		BVItem& it = items[i];
 		it.i = i;
 		// Calc polygon bounds.
-		const unsigned short* p = &polys[i*nvp*2];
+		const unsigned int* p = &polys[i*nvp*2];
 		it.bmin[0] = it.bmax[0] = verts[p[0]*3+0];
 		it.bmin[1] = it.bmax[1] = verts[p[0]*3+1];
 		it.bmin[2] = it.bmax[2] = verts[p[0]*3+2];
@@ -189,9 +189,9 @@ static int createBVTree(const unsigned short* verts, const int /*nverts*/,
 		for (int j = 1; j < nvp; ++j)
 		{
 			if (p[j] == MESH_NULL_IDX) break;
-			unsigned short x = verts[p[j]*3+0];
-			unsigned short y = verts[p[j]*3+1];
-			unsigned short z = verts[p[j]*3+2];
+			unsigned int x = verts[p[j]*3+0];
+			unsigned int y = verts[p[j]*3+1];
+			unsigned int z = verts[p[j]*3+2];
 			
 			if (x < it.bmin[0]) it.bmin[0] = x;
 			if (y < it.bmin[1]) it.bmin[1] = y;
@@ -202,8 +202,8 @@ static int createBVTree(const unsigned short* verts, const int /*nverts*/,
 			if (z > it.bmax[2]) it.bmax[2] = z;
 		}
 		// Remap y
-		it.bmin[1] = (unsigned short)dtMathFloorf((float)it.bmin[1]*ch/cs);
-		it.bmax[1] = (unsigned short)dtMathCeilf((float)it.bmax[1]*ch/cs);
+		it.bmin[1] = dtMathFloorf((float)it.bmin[1]*ch/cs);
+		it.bmax[1] = dtMathCeilf((float)it.bmax[1]*ch/cs);
 	}
 	
 	int curNode = 0;
@@ -291,7 +291,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 		{
 			for (int i = 0; i < params->vertCount; ++i)
 			{
-				const unsigned short* iv = &params->verts[i*3];
+				const unsigned int* iv = &params->verts[i*3];
 				const float h = params->bmin[1] + iv[1] * params->ch;
 				hmin = dtMin(hmin,h);
 				hmax = dtMax(hmax,h);
@@ -339,7 +339,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 	int portalCount = 0;
 	for (int i = 0; i < params->polyCount; ++i)
 	{
-		const unsigned short* p = &params->polys[i*2*nvp];
+		const unsigned int* p = &params->polys[i*2*nvp];
 		for (int j = 0; j < nvp; ++j)
 		{
 			if (p[j] == MESH_NULL_IDX) break;
@@ -347,7 +347,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 			
 			if (p[nvp+j] & 0x8000)
 			{
-				unsigned short dir = p[nvp+j] & 0xf;
+				unsigned int dir = p[nvp+j] & 0xf;
 				if (dir != 0xf)
 					portalCount++;
 			}
@@ -365,7 +365,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 		detailTriCount = params->detailTriCount;
 		for (int i = 0; i < params->polyCount; ++i)
 		{
-			const unsigned short* p = &params->polys[i*nvp*2];
+			const unsigned int* p = &params->polys[i*nvp*2];
 			int ndv = params->detailMeshes[i*4+1];
 			int nv = 0;
 			for (int j = 0; j < nvp; ++j)
@@ -384,7 +384,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 		detailTriCount = 0;
 		for (int i = 0; i < params->polyCount; ++i)
 		{
-			const unsigned short* p = &params->polys[i*nvp*2];
+			const unsigned int* p = &params->polys[i*nvp*2];
 			int nv = 0;
 			for (int j = 0; j < nvp; ++j)
 			{
@@ -460,7 +460,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 	// Mesh vertices
 	for (int i = 0; i < params->vertCount; ++i)
 	{
-		const unsigned short* iv = &params->verts[i*3];
+		const unsigned int* iv = &params->verts[i*3];
 		float* v = &navVerts[i*3];
 		v[0] = params->bmin[0] + iv[0] * params->cs;
 		v[1] = params->bmin[1] + iv[1] * params->ch;
@@ -483,7 +483,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 	
 	// Store polygons
 	// Mesh polys
-	const unsigned short* src = params->polys;
+	const unsigned int* src = params->polys;
 	for (int i = 0; i < params->polyCount; ++i)
 	{
 		dtPoly* p = &navPolys[i];
@@ -498,7 +498,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 			if (src[nvp+j] & 0x8000)
 			{
 				// Border or portal edge.
-				unsigned short dir = src[nvp+j] & 0xf;
+				unsigned int dir = src[nvp+j] & 0xf;
 				if (dir == 0xf) // Border
 					p->neis[j] = 0;
 				else if (dir == 0) // Portal x-
@@ -529,8 +529,8 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 		{
 			dtPoly* p = &navPolys[offMeshPolyBase+n];
 			p->vertCount = 2;
-			p->verts[0] = (unsigned short)(offMeshVertsBase + n*2+0);
-			p->verts[1] = (unsigned short)(offMeshVertsBase + n*2+1);
+			p->verts[0] = (unsigned int)(offMeshVertsBase + n*2+0);
+			p->verts[1] = (unsigned int)(offMeshVertsBase + n*2+1);
 			p->flags = params->offMeshConFlags[i];
 			p->setArea(params->offMeshConAreas[i]);
 			p->setType(DT_POLYTYPE_OFFMESH_CONNECTION);
@@ -543,7 +543,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 	// We compress the mesh data by skipping them and using the navmesh coordinates.
 	if (params->detailMeshes)
 	{
-		unsigned short vbase = 0;
+		unsigned int vbase = 0;
 		for (int i = 0; i < params->polyCount; ++i)
 		{
 			dtPolyDetail& dtl = navDMeshes[i];
@@ -558,7 +558,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 			if (ndv-nv)
 			{
 				memcpy(&navDVerts[vbase*3], &params->detailVerts[(vb+nv)*3], sizeof(float)*3*(ndv-nv));
-				vbase += (unsigned short)(ndv-nv);
+				vbase += (unsigned int)(ndv-nv);
 			}
 		}
 		// Store triangles.
@@ -608,7 +608,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 		if (offMeshConClass[i*2+0] == 0xff)
 		{
 			dtOffMeshConnection* con = &offMeshCons[n];
-			con->poly = (unsigned short)(offMeshPolyBase + n);
+			con->poly = (unsigned int)(offMeshPolyBase + n);
 			// Copy connection end-points.
 			const float* endPts = &params->offMeshConVerts[i*2*3];
 			dtVcopy(&con->pos[0], &endPts[0]);

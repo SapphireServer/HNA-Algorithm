@@ -196,8 +196,8 @@ void TestCase::doTests(dtNavMesh* navmesh, dtNavMeshQuery* navquery)
 		iter->nstraight = 0;
 		
 		dtQueryFilter filter;
-		filter.setIncludeFlags((unsigned short)iter->includeFlags);
-		filter.setExcludeFlags((unsigned short)iter->excludeFlags);
+		filter.setIncludeFlags((unsigned int)iter->includeFlags);
+		filter.setExcludeFlags((unsigned int)iter->excludeFlags);
 	
 		// Find start points
 		TimeVal findNearestPolyStart = getPerfTime();

@@ -84,7 +84,7 @@
 
 
 /*------------------------------------------------------------------------
-* Undefine the following #define in order to use short idxtype as the idxtype 
+* Undefine the following #define in order to use int idxtype as the idxtype 
 *-------------------------------------------------------------------------*/
 #if IDXTYPEWIDTH == 32
   #define SCNIDX  SCNd32

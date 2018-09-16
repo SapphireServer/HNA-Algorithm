@@ -67,7 +67,7 @@ bool duDumpPolyMeshToObj(rcPolyMesh& pmesh, duFileIO* io)
 	
 	for (int i = 0; i < pmesh.nverts; ++i)
 	{
-		const unsigned short* v = &pmesh.verts[i*3];
+		const unsigned int* v = &pmesh.verts[i*3];
 		const float x = orig[0] + v[0]*cs;
 		const float y = orig[1] + (v[1]+1)*ch + 0.1f;
 		const float z = orig[2] + v[2]*cs;
@@ -78,7 +78,7 @@ bool duDumpPolyMeshToObj(rcPolyMesh& pmesh, duFileIO* io)
 
 	for (int i = 0; i < pmesh.npolys; ++i)
 	{
-		const unsigned short* p = &pmesh.polys[i*nvp*2];
+		const unsigned int* p = &pmesh.polys[i*nvp*2];
 		for (int j = 2; j < nvp; ++j)
 		{
 			if (p[j] == RC_MESH_NULL_IDX) break;
@@ -307,7 +307,7 @@ bool duDumpCompactHeightfield(struct rcCompactHeightfield& chf, duFileIO* io)
 	if (chf.spans)
 		io->write(chf.spans, sizeof(rcCompactSpan)*chf.spanCount);
 	if (chf.dist)
-		io->write(chf.dist, sizeof(unsigned short)*chf.spanCount);
+		io->write(chf.dist, sizeof(unsigned int)*chf.spanCount);
 	if (chf.areas)
 		io->write(chf.areas, sizeof(unsigned char)*chf.spanCount);
 
@@ -386,13 +386,13 @@ bool duReadCompactHeightfield(struct rcCompactHeightfield& chf, duFileIO* io)
 	}
 	if (tmp & 4)
 	{
-		chf.dist = (unsigned short*)rcAlloc(sizeof(unsigned short)*chf.spanCount, RC_ALLOC_PERM);
+		chf.dist = (unsigned int*)rcAlloc(sizeof(unsigned int)*chf.spanCount, RC_ALLOC_PERM);
 		if (!chf.dist)
 		{
 			printf("duReadCompactHeightfield: Could not alloc dist (%d)\n", chf.spanCount);
 			return false;
 		}
-		io->read(chf.dist, sizeof(unsigned short)*chf.spanCount);
+		io->read(chf.dist, sizeof(unsigned int)*chf.spanCount);
 	}
 	if (tmp & 8)
 	{

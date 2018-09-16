@@ -82,7 +82,7 @@ static const int DT_NAVMESH_STATE_VERSION = 1;
 
 /// A flag that indicates that an entity links to an external entity.
 /// (E.g. A polygon edge is a portal that links to another polygon.)
-static const unsigned short DT_EXT_LINK = 0x8000;
+static const unsigned int DT_EXT_LINK = 0x8000;
 
 /// A value that indicates the entity does not link to anything.
 static const unsigned int DT_NULL_LINK = 0xffffffff;
@@ -136,13 +136,13 @@ struct dtPoly
 
 	/// The indices of the polygon's vertices.
 	/// The actual vertices are located in dtMeshTile::verts.
-	unsigned short verts[DT_VERTS_PER_POLYGON];
+	unsigned int verts[DT_VERTS_PER_POLYGON];
 
 	/// Packed data representing neighbor polygons references and flags for each edge.
-	unsigned short neis[DT_VERTS_PER_POLYGON];
+	unsigned int neis[DT_VERTS_PER_POLYGON];
 
 	/// The user defined polygon flags.
-	unsigned short flags;
+	unsigned int flags;
 
 	/// The number of vertices in the polygon.
 	unsigned char vertCount;
@@ -191,8 +191,8 @@ struct dtLink
 /// @see dtMeshTile
 struct dtBVNode
 {
-	unsigned short bmin[3];			///< Minimum bounds of the node's AABB. [(x, y, z)]
-	unsigned short bmax[3];			///< Maximum bounds of the node's AABB. [(x, y, z)]
+	unsigned int bmin[3];			///< Minimum bounds of the node's AABB. [(x, y, z)]
+	unsigned int bmax[3];			///< Maximum bounds of the node's AABB. [(x, y, z)]
 	int i;							///< The node's index. (Negative for escape sequence.)
 };
 
@@ -207,7 +207,7 @@ struct dtOffMeshConnection
 	float rad;		
 
 	/// The polygon reference of the connection within the tile.
-	unsigned short poly;
+	unsigned int poly;
 
 	/// Link flags. 
 	/// @note These are not the connection's user defined flags. Those are assigned via the 
@@ -440,13 +440,13 @@ public:
 	///  @param[in]	ref		The polygon reference.
 	///  @param[in]	flags	The new flags for the polygon.
 	/// @return The status flags for the operation.
-	dtStatus setPolyFlags(dtPolyRef ref, unsigned short flags);
+	dtStatus setPolyFlags(dtPolyRef ref, unsigned int flags);
 
 	/// Gets the user defined flags for the specified polygon.
 	///  @param[in]		ref				The polygon reference.
 	///  @param[out]	resultFlags		The polygon flags.
 	/// @return The status flags for the operation.
-	dtStatus getPolyFlags(dtPolyRef ref, unsigned short* resultFlags) const;
+	dtStatus getPolyFlags(dtPolyRef ref, unsigned int* resultFlags) const;
 
 	/// Sets the user defined area for the specified polygon.
 	///  @param[in]	ref		The polygon reference.
@@ -683,7 +683,7 @@ Basically, if the storage structure of a tile changes, its associated
 tile reference changes.
 
 
-@var unsigned short dtPoly::neis[DT_VERTS_PER_POLYGON]
+@var unsigned int dtPoly::neis[DT_VERTS_PER_POLYGON]
 @par
 
 Each entry represents data for the edge starting at the vertex of the same index. 

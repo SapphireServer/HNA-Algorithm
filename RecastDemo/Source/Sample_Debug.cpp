@@ -75,8 +75,8 @@ Sample_Debug::Sample_Debug() :
 	
 /*	if (m_chf)
 	{
-		unsigned short ymin = 0xffff;
-		unsigned short ymax = 0;
+		unsigned int ymin = 0xffff;
+		unsigned int ymax = 0;
 		for (int i = 0; i < m_chf->spanCount; ++i)
 		{
 			const rcCompactSpan& s = m_chf->spans[i];

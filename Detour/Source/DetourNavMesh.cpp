@@ -309,7 +309,7 @@ int dtNavMesh::findConnectingPolys(const float* va, const float* vb,
 
 	// Remove links pointing to 'side' and compact the links array. 
 	float bmin[2], bmax[2];
-	unsigned short m = DT_EXT_LINK | (unsigned short)side;
+	unsigned int m = DT_EXT_LINK | (unsigned int)side;
 	int n = 0;
 	
 	dtPolyRef base = getPolyRefBase(tile);
@@ -395,7 +395,7 @@ void dtNavMesh::connectExtLinks(dtMeshTile* tile, dtMeshTile* target, int side)
 		dtPoly* poly = &tile->polys[i];
 
 		// Create new links.
-//		unsigned short m = DT_EXT_LINK | (unsigned short)side;
+//		unsigned int m = DT_EXT_LINK | (unsigned int)side;
 		
 		const int nv = poly->vertCount;
 		for (int j = 0; j < nv; ++j)
@@ -506,7 +506,7 @@ void dtNavMesh::connectExtOffMeshLinks(dtMeshTile* tile, dtMeshTile* target, int
 			unsigned int tidx = allocLink(tile);
 			if (tidx != DT_NULL_LINK)
 			{
-				const unsigned short landPolyIdx = (unsigned short)decodePolyIdPoly(ref);
+				const unsigned int landPolyIdx = (unsigned int)decodePolyIdPoly(ref);
 				dtPoly* landPoly = &tile->polys[landPolyIdx];
 				dtLink* link = &tile->links[tidx];
 				link->ref = getPolyRefBase(target) | (dtPolyRef)(targetCon->poly);
@@ -603,7 +603,7 @@ void dtNavMesh::baseOffMeshLinks(dtMeshTile* tile)
 		unsigned int tidx = allocLink(tile);
 		if (tidx != DT_NULL_LINK)
 		{
-			const unsigned short landPolyIdx = (unsigned short)decodePolyIdPoly(ref);
+			const unsigned int landPolyIdx = (unsigned int)decodePolyIdPoly(ref);
 			dtPoly* landPoly = &tile->polys[landPolyIdx];
 			dtLink* link = &tile->links[tidx];
 			link->ref = base | (dtPolyRef)(con->poly);
@@ -756,7 +756,7 @@ int dtNavMesh::queryPolygonsInTile(const dtMeshTile* tile, const float* qmin, co
 		const float qfac = tile->header->bvQuantFactor;
 		
 		// Calculate quantized box
-		unsigned short bmin[3], bmax[3];
+		unsigned int bmin[3], bmax[3];
 		// dtClamp query box to world box.
 		float minx = dtClamp(qmin[0], tbmin[0], tbmax[0]) - tbmin[0];
 		float miny = dtClamp(qmin[1], tbmin[1], tbmax[1]) - tbmin[1];
@@ -765,12 +765,12 @@ int dtNavMesh::queryPolygonsInTile(const dtMeshTile* tile, const float* qmin, co
 		float maxy = dtClamp(qmax[1], tbmin[1], tbmax[1]) - tbmin[1];
 		float maxz = dtClamp(qmax[2], tbmin[2], tbmax[2]) - tbmin[2];
 		// Quantize
-		bmin[0] = (unsigned short)(qfac * minx) & 0xfffe;
-		bmin[1] = (unsigned short)(qfac * miny) & 0xfffe;
-		bmin[2] = (unsigned short)(qfac * minz) & 0xfffe;
-		bmax[0] = (unsigned short)(qfac * maxx + 1) | 1;
-		bmax[1] = (unsigned short)(qfac * maxy + 1) | 1;
-		bmax[2] = (unsigned short)(qfac * maxz + 1) | 1;
+		bmin[0] = (unsigned int)(qfac * minx) & 0xfffe;
+		bmin[1] = (unsigned int)(qfac * miny) & 0xfffe;
+		bmin[2] = (unsigned int)(qfac * minz) & 0xfffe;
+		bmax[0] = (unsigned int)(qfac * maxx + 1) | 1;
+		bmax[1] = (unsigned int)(qfac * maxy + 1) | 1;
+		bmax[2] = (unsigned int)(qfac * maxz + 1) | 1;
 		
 		// Traverse tree
 		dtPolyRef base = getPolyRefBase(tile);
@@ -1294,7 +1294,7 @@ struct dtTileState
 
 struct dtPolyState
 {
-	unsigned short flags;						// Flags (see dtPolyFlags).
+	unsigned int flags;						// Flags (see dtPolyFlags).
 	unsigned char area;							// Area ID of the polygon.
 };
 
@@ -1449,7 +1449,7 @@ const dtOffMeshConnection* dtNavMesh::getOffMeshConnectionByRef(dtPolyRef ref) c
 }
 
 
-dtStatus dtNavMesh::setPolyFlags(dtPolyRef ref, unsigned short flags)
+dtStatus dtNavMesh::setPolyFlags(dtPolyRef ref, unsigned int flags)
 {
 	if (!ref) return DT_FAILURE;
 	unsigned int salt, it, ip;
@@ -1466,7 +1466,7 @@ dtStatus dtNavMesh::setPolyFlags(dtPolyRef ref, unsigned short flags)
 	return DT_SUCCESS;
 }
 
-dtStatus dtNavMesh::getPolyFlags(dtPolyRef ref, unsigned short* resultFlags) const
+dtStatus dtNavMesh::getPolyFlags(dtPolyRef ref, unsigned int* resultFlags) const
 {
 	if (!ref) return DT_FAILURE;
 	unsigned int salt, it, ip;

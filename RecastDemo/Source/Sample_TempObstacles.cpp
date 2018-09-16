@@ -188,7 +188,7 @@ struct MeshProcess : public dtTileCacheMeshProcess
 	}
 	
 	virtual void process(struct dtNavMeshCreateParams* params,
-						 unsigned char* polyAreas, unsigned short* polyFlags)
+						 unsigned char* polyAreas, unsigned int* polyFlags)
 	{
 		// Update poly flags from areas.
 		for (int i = 0; i < params->polyCount; ++i)
@@ -427,8 +427,8 @@ static int rasterizeTileLayers(BuildContext* ctx, InputGeom* geom,
 		header.maxx = (unsigned char)layer->maxx;
 		header.miny = (unsigned char)layer->miny;
 		header.maxy = (unsigned char)layer->maxy;
-		header.hmin = (unsigned short)layer->hmin;
-		header.hmax = (unsigned short)layer->hmax;
+		header.hmin = (unsigned int)layer->hmin;
+		header.hmax = (unsigned int)layer->hmax;
 
 		dtStatus status = dtBuildTileCacheLayer(&comp, &header, layer->heights, layer->areas, layer->cons,
 												&tile->data, &tile->dataSize);

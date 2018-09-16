@@ -523,7 +523,7 @@ void duDebugDrawLayerPolyMesh(duDebugDraw* dd, const struct rcLayerPolyMesh& lme
 	
 	for (int i = 0; i < lmesh.npolys; ++i)
 	{
-		const unsigned short* p = &lmesh.polys[i*nvp*2];
+		const unsigned int* p = &lmesh.polys[i*nvp*2];
 		
 		unsigned int color;
 		if (lmesh.areas[i] == RC_WALKABLE_AREA)
@@ -533,7 +533,7 @@ void duDebugDrawLayerPolyMesh(duDebugDraw* dd, const struct rcLayerPolyMesh& lme
 		else
 			color = duIntToCol(lmesh.areas[i], 255);
 		
-		unsigned short vi[3];
+		unsigned int vi[3];
 		for (int j = 2; j < nvp; ++j)
 		{
 			if (p[j] == RC_MESH_NULL_IDX) break;
@@ -542,7 +542,7 @@ void duDebugDrawLayerPolyMesh(duDebugDraw* dd, const struct rcLayerPolyMesh& lme
 			vi[2] = p[j];
 			for (int k = 0; k < 3; ++k)
 			{
-				const unsigned short* v = &lmesh.verts[vi[k]*3];
+				const unsigned int* v = &lmesh.verts[vi[k]*3];
 				const float x = orig[0] + v[0]*cs;
 				const float y = orig[1] + (v[1]+1)*ch;
 				const float z = orig[2] + v[2]*cs;
@@ -557,7 +557,7 @@ void duDebugDrawLayerPolyMesh(duDebugDraw* dd, const struct rcLayerPolyMesh& lme
 	dd->begin(DU_DRAW_LINES, 1.5f);
 	for (int i = 0; i < lmesh.npolys; ++i)
 	{
-		const unsigned short* p = &lmesh.polys[i*nvp*2];
+		const unsigned int* p = &lmesh.polys[i*nvp*2];
 		for (int j = 0; j < nvp; ++j)
 		{
 			if (p[j] == RC_MESH_NULL_IDX) break;
@@ -567,7 +567,7 @@ void duDebugDrawLayerPolyMesh(duDebugDraw* dd, const struct rcLayerPolyMesh& lme
 			
 			for (int k = 0; k < 2; ++k)
 			{
-				const unsigned short* v = &lmesh.verts[vi[k]*3];
+				const unsigned int* v = &lmesh.verts[vi[k]*3];
 				const float x = orig[0] + v[0]*cs;
 				const float y = orig[1] + (v[1]+1)*ch + 0.1f;
 				const float z = orig[2] + v[2]*cs;
@@ -582,7 +582,7 @@ void duDebugDrawLayerPolyMesh(duDebugDraw* dd, const struct rcLayerPolyMesh& lme
 	dd->begin(DU_DRAW_LINES, 2.5f);
 	for (int i = 0; i < lmesh.npolys; ++i)
 	{
-		const unsigned short* p = &lmesh.polys[i*nvp*2];
+		const unsigned int* p = &lmesh.polys[i*nvp*2];
 		for (int j = 0; j < nvp; ++j)
 		{
 			if (p[j] == RC_MESH_NULL_IDX) break;
@@ -593,8 +593,8 @@ void duDebugDrawLayerPolyMesh(duDebugDraw* dd, const struct rcLayerPolyMesh& lme
 			unsigned int col = colb;
 			if ((p[nvp+j] & 0xf) != 0xf)
 			{
-				const unsigned short* va = &lmesh.verts[vi[0]*3];
-				const unsigned short* vb = &lmesh.verts[vi[1]*3];
+				const unsigned int* va = &lmesh.verts[vi[0]*3];
+				const unsigned int* vb = &lmesh.verts[vi[1]*3];
 
 				const float ax = orig[0] + va[0]*cs;
 				const float ay = orig[1] + (va[1]+1+(i&1))*ch;
@@ -621,7 +621,7 @@ void duDebugDrawLayerPolyMesh(duDebugDraw* dd, const struct rcLayerPolyMesh& lme
 							 
 			for (int k = 0; k < 2; ++k)
 			{
-				const unsigned short* v = &lmesh.verts[vi[k]*3];
+				const unsigned int* v = &lmesh.verts[vi[k]*3];
 				const float x = orig[0] + v[0]*cs;
 				const float y = orig[1] + (v[1]+1)*ch + 0.1f;
 				const float z = orig[2] + v[2]*cs;
@@ -635,7 +635,7 @@ void duDebugDrawLayerPolyMesh(duDebugDraw* dd, const struct rcLayerPolyMesh& lme
 	const unsigned int colv = duRGBA(0,0,0,220);
 	for (int i = 0; i < lmesh.nverts; ++i)
 	{
-		const unsigned short* v = &lmesh.verts[i*3];
+		const unsigned int* v = &lmesh.verts[i*3];
 		const float x = orig[0] + v[0]*cs;
 		const float y = orig[1] + (v[1]+1)*ch + 0.1f;
 		const float z = orig[2] + v[2]*cs;
@@ -668,7 +668,7 @@ static void getContourCenter(const rcContour* cont, const float* orig, float cs,
 	center[2] += orig[2];
 }
 
-static const rcContour* findContourFromSet(const rcContourSet& cset, unsigned short reg)
+static const rcContour* findContourFromSet(const rcContourSet& cset, unsigned int reg)
 {
 	for (int i = 0; i < cset.nconts; ++i)
 	{
@@ -700,9 +700,9 @@ void duDebugDrawRegionConnections(duDebugDraw* dd, const rcContourSet& cset, con
 		for (int j = 0; j < cont->nverts; ++j)
 		{
 			const int* v = &cont->verts[j*4];
-			if(v[3] < 65500)
+			//if(v[3] < 65500)
 			{
-				const unsigned short a = v[3];
+				const unsigned int a = v[3];
 
 				if (a == 0 || a < cont->reg) continue;
 				const rcContour* cont2 = findContourFromSet(cset, a);
@@ -872,7 +872,7 @@ void duDebugDrawPolyMesh(duDebugDraw* dd, const struct rcPolyMesh& mesh)
 	
 	for (int i = 0; i < mesh.npolys; ++i)
 	{
-		const unsigned short* p = &mesh.polys[i*nvp*2];
+		const unsigned int* p = &mesh.polys[i*nvp*2];
 		
 		unsigned int color;
 		if (mesh.areas[i] == RC_WALKABLE_AREA)
@@ -882,7 +882,7 @@ void duDebugDrawPolyMesh(duDebugDraw* dd, const struct rcPolyMesh& mesh)
 		else
 			color = duIntToCol(mesh.areas[i], 255);
 		
-		unsigned short vi[3];
+		unsigned int vi[3];
 		for (int j = 2; j < nvp; ++j)
 		{
 			if (p[j] == RC_MESH_NULL_IDX) break;
@@ -891,7 +891,7 @@ void duDebugDrawPolyMesh(duDebugDraw* dd, const struct rcPolyMesh& mesh)
 			vi[2] = p[j];
 			for (int k = 0; k < 3; ++k)
 			{
-				const unsigned short* v = &mesh.verts[vi[k]*3];
+				const unsigned int* v = &mesh.verts[vi[k]*3];
 				const float x = orig[0] + v[0]*cs;
 				const float y = orig[1] + (v[1]+1)*ch;
 				const float z = orig[2] + v[2]*cs;
@@ -906,7 +906,7 @@ void duDebugDrawPolyMesh(duDebugDraw* dd, const struct rcPolyMesh& mesh)
 	dd->begin(DU_DRAW_LINES, 1.5f);
 	for (int i = 0; i < mesh.npolys; ++i)
 	{
-		const unsigned short* p = &mesh.polys[i*nvp*2];
+		const unsigned int* p = &mesh.polys[i*nvp*2];
 		for (int j = 0; j < nvp; ++j)
 		{
 			if (p[j] == RC_MESH_NULL_IDX) break;
@@ -916,7 +916,7 @@ void duDebugDrawPolyMesh(duDebugDraw* dd, const struct rcPolyMesh& mesh)
 			
 			for (int k = 0; k < 2; ++k)
 			{
-				const unsigned short* v = &mesh.verts[vi[k]*3];
+				const unsigned int* v = &mesh.verts[vi[k]*3];
 				const float x = orig[0] + v[0]*cs;
 				const float y = orig[1] + (v[1]+1)*ch + 0.1f;
 				const float z = orig[2] + v[2]*cs;
@@ -931,7 +931,7 @@ void duDebugDrawPolyMesh(duDebugDraw* dd, const struct rcPolyMesh& mesh)
 	dd->begin(DU_DRAW_LINES, 2.5f);
 	for (int i = 0; i < mesh.npolys; ++i)
 	{
-		const unsigned short* p = &mesh.polys[i*nvp*2];
+		const unsigned int* p = &mesh.polys[i*nvp*2];
 		for (int j = 0; j < nvp; ++j)
 		{
 			if (p[j] == RC_MESH_NULL_IDX) break;
@@ -944,7 +944,7 @@ void duDebugDrawPolyMesh(duDebugDraw* dd, const struct rcPolyMesh& mesh)
 				col = duRGBA(255,255,255,128);
 			for (int k = 0; k < 2; ++k)
 			{
-				const unsigned short* v = &mesh.verts[vi[k]*3];
+				const unsigned int* v = &mesh.verts[vi[k]*3];
 				const float x = orig[0] + v[0]*cs;
 				const float y = orig[1] + (v[1]+1)*ch + 0.1f;
 				const float z = orig[2] + v[2]*cs;
@@ -958,7 +958,7 @@ void duDebugDrawPolyMesh(duDebugDraw* dd, const struct rcPolyMesh& mesh)
 	const unsigned int colv = duRGBA(0,0,0,220);
 	for (int i = 0; i < mesh.nverts; ++i)
 	{
-		const unsigned short* v = &mesh.verts[i*3];
+		const unsigned int* v = &mesh.verts[i*3];
 		const float x = orig[0] + v[0]*cs;
 		const float y = orig[1] + (v[1]+1)*ch + 0.1f;
 		const float z = orig[2] + v[2]*cs;

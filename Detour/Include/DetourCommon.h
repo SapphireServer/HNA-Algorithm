@@ -332,8 +332,8 @@ inline float dtTriArea2D(const float* a, const float* b, const float* c)
 ///  @param[in]		bmax	Maximum bounds of box B. [(x, y, z)]
 /// @return True if the two AABB's overlap.
 /// @see dtOverlapBounds
-inline bool dtOverlapQuantBounds(const unsigned short amin[3], const unsigned short amax[3],
-								 const unsigned short bmin[3], const unsigned short bmax[3])
+inline bool dtOverlapQuantBounds(const unsigned int amin[3], const unsigned int amax[3],
+								 const unsigned int bmin[3], const unsigned int bmax[3])
 {
 	bool overlap = true;
 	overlap = (amin[0] > bmax[0] || amax[0] < bmin[0]) ? false : overlap;
@@ -402,7 +402,7 @@ float dtDistancePtSegSqr2D(const float* pt, const float* p, const float* q, floa
 ///  @param[in]		idx		The polygon indices. [(vertIndex) * @p nidx]
 ///  @param[in]		nidx	The number of indices in the polygon. [Limit: >= 3]
 ///  @param[in]		verts	The polygon vertices. [(x, y, z) * vertCount]
-void dtCalcPolyCenter(float* tc, const unsigned short* idx, int nidx, const float* verts);
+void dtCalcPolyCenter(float* tc, const unsigned int* idx, int nidx, const float* verts);
 
 /// Determines if the two convex polygons overlap on the xz-plane.
 ///  @param[in]		polya		Polygon A vertices.	[(x, y, z) * @p npolya]

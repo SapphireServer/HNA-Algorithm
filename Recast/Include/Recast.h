@@ -301,8 +301,8 @@ struct rcCompactCell
 /// Represents a span of unobstructed space within a compact heightfield.
 struct rcCompactSpan
 {
-	unsigned short y;			///< The lower extent of the span. (Measured from the heightfield's base.)
-	unsigned short reg;			///< The id of the region the span belongs to. (Or zero if not in a region.)
+	unsigned int y;			///< The lower extent of the span. (Measured from the heightfield's base.)
+	unsigned int reg;			///< The id of the region the span belongs to. (Or zero if not in a region.)
 	unsigned int con : 24;		///< Packed neighbor connection data.
 	unsigned int h : 8;			///< The height of the span.  (Measured from #y.)
 };
@@ -317,15 +317,15 @@ struct rcCompactHeightfield
 	int walkableHeight;			///< The walkable height used during the build of the field.  (See: rcConfig::walkableHeight)
 	int walkableClimb;			///< The walkable climb used during the build of the field. (See: rcConfig::walkableClimb)
 	int borderSize;				///< The AABB border size used during the build of the field. (See: rcConfig::borderSize)
-	unsigned short maxDistance;	///< The maximum distance value of any span within the field. 
-	unsigned short maxRegions;	///< The maximum region id of any span within the field. 
+	unsigned int maxDistance;	///< The maximum distance value of any span within the field. 
+	unsigned int maxRegions;	///< The maximum region id of any span within the field. 
 	float bmin[3];				///< The minimum bounds in world space. [(x, y, z)]
 	float bmax[3];				///< The maximum bounds in world space. [(x, y, z)]
 	float cs;					///< The size of each cell. (On the xz-plane.)
 	float ch;					///< The height of each cell. (The minimum increment along the y-axis.)
 	rcCompactCell* cells;		///< Array of cells. [Size: #width*#height]
 	rcCompactSpan* spans;		///< Array of spans. [Size: #spanCount]
-	unsigned short* dist;		///< Array containing border distance data. [Size: #spanCount]
+	unsigned int* dist;		///< Array containing border distance data. [Size: #spanCount]
 	unsigned char* areas;		///< Array containing area id data. [Size: #spanCount]
 };
 
@@ -366,7 +366,7 @@ struct rcContour
 	int nverts;			///< The number of vertices in the simplified contour. 
 	int* rverts;		///< Raw contour vertex and connection data. [Size: 4 * #nrverts]
 	int nrverts;		///< The number of vertices in the raw contour. 
-	unsigned short reg;	///< The region id of the contour.
+	unsigned int reg;	///< The region id of the contour.
 	unsigned char area;	///< The area id of the contour.
 };
 
@@ -389,10 +389,10 @@ struct rcContourSet
 /// @ingroup recast
 struct rcPolyMesh
 {
-	unsigned short* verts;	///< The mesh vertices. [Form: (x, y, z) * #nverts]
-	unsigned short* polys;	///< Polygon and neighbor data. [Length: #maxpolys * 2 * #nvp]
-	unsigned short* regs;	///< The region id assigned to each polygon. [Length: #maxpolys]
-	unsigned short* flags;	///< The user defined flags for each polygon. [Length: #maxpolys]
+	unsigned int* verts;	///< The mesh vertices. [Form: (x, y, z) * #nverts]
+	unsigned int* polys;	///< Polygon and neighbor data. [Length: #maxpolys * 2 * #nvp]
+	unsigned int* regs;	///< The region id assigned to each polygon. [Length: #maxpolys]
+	unsigned int* flags;	///< The user defined flags for each polygon. [Length: #maxpolys]
 	unsigned char* areas;	///< The area id assigned to each polygon. [Length: #maxpolys]
 	int nverts;				///< The number of vertices.
 	int npolys;				///< The number of polygons.
@@ -502,7 +502,7 @@ void rcFreePolyMeshDetail(rcPolyMeshDetail* dmesh);
 /// region and its spans are considered unwalkable.
 /// (Used during the region and contour build process.)
 /// @see rcCompactSpan::reg
-static const unsigned short RC_BORDER_REG = 0x8000;
+static const unsigned int RC_BORDER_REG = 0x8000;
 
 /// Border vertex flag.
 /// If a region ID has this bit set, then the associated element lies on
@@ -537,7 +537,7 @@ static const int RC_CONTOUR_REG_MASK = 0xffff;
 /// An value which indicates an invalid index within a mesh.
 /// @note This does not necessarily indicate an error.
 /// @see rcPolyMesh::polys
-static const unsigned short RC_MESH_NULL_IDX = 0xffff;
+static const unsigned int RC_MESH_NULL_IDX = 0xffffffff;
 
 /// Represents the null area.
 /// When a data element is given this value it is considered to no longer be 
@@ -798,7 +798,7 @@ void rcClearUnwalkableTriangles(rcContext* ctx, const float walkableSlopeAngle, 
 ///  @param[in]		area			The area id of the span. [Limit: <= #RC_WALKABLE_AREA)
 ///  @param[in]		flagMergeThr	The merge theshold. [Limit: >= 0] [Units: vx]
 void rcAddSpan(rcContext* ctx, rcHeightfield& hf, const int x, const int y,
-			   const unsigned short smin, const unsigned short smax,
+			   const unsigned int smin, const unsigned int smax,
 			   const unsigned char area, const int flagMergeThr);
 
 /// Rasterizes a triangle into the specified heightfield.
@@ -842,7 +842,7 @@ void rcRasterizeTriangles(rcContext* ctx, const float* verts, const int nv,
 ///  @param[in]		flagMergeThr	The distance where the walkable flag is favored over the non-walkable flag. 
 ///  							[Limit: >= 0] [Units: vx]
 void rcRasterizeTriangles(rcContext* ctx, const float* verts, const int nv,
-						  const unsigned short* tris, const unsigned char* areas, const int nt,
+						  const unsigned int* tris, const unsigned char* areas, const int nt,
 						  rcHeightfield& solid, const int flagMergeThr = 1);
 
 /// Rasterizes triangles into the specified heightfield.

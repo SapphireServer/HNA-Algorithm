@@ -27,7 +27,7 @@ enum dtNodeFlags
 	DT_NODE_CLOSED = 0x02,
 };
 
-typedef unsigned short dtNodeIndex;
+typedef unsigned int dtNodeIndex;
 static const dtNodeIndex DT_NULL_IDX = (dtNodeIndex)~0;
 
 struct dtNode

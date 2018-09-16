@@ -1129,8 +1129,8 @@ unsigned char* Sample_TileMesh::buildTileMesh(const int tx, const int ty, const 
 		if (m_pmesh->nverts >= 0xffff)
 		{
 			// The vertex indices are ushorts, and cannot point to more than 0xffff vertices.
-			m_ctx->log(RC_LOG_ERROR, "Too many vertices per tile %d (max: %d).", m_pmesh->nverts, 0xffff);
-			return 0;
+			m_ctx->log(RC_LOG_ERROR, "Too many vertices per tile %d (max: %d) data may be corrupted.", m_pmesh->nverts, 0xffff);
+			//return 0;
 		}
 		
 		// Update poly flags from areas.

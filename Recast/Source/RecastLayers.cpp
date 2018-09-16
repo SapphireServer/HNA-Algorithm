@@ -34,7 +34,7 @@ struct rcLayerRegion
 {
 	unsigned char layers[RC_MAX_LAYERS];
 	unsigned char neis[RC_MAX_NEIS];
-	unsigned short ymin, ymax;
+	unsigned int ymin, ymax;
 	unsigned char layerId;		// Layer ID
 	unsigned char nlayers;		// Layer count
 	unsigned char nneis;		// Neighbour count
@@ -61,8 +61,8 @@ static bool contains(const unsigned char* a, const unsigned char an, const unsig
 	return false;
 }
 
-inline bool overlapRange(const unsigned short amin, const unsigned short amax,
-						 const unsigned short bmin, const unsigned short bmax)
+inline bool overlapRange(const unsigned int amin, const unsigned int amax,
+						 const unsigned int bmin, const unsigned int bmax)
 {
 	return (amin > bmax || amax < bmin) ? false : true;
 }
@@ -71,7 +71,7 @@ inline bool overlapRange(const unsigned short amin, const unsigned short amax,
 
 struct rcLayerSweepSpan
 {
-	unsigned short ns;	// number samples
+	unsigned int ns;	// number samples
 	unsigned char id;	// region id
 	unsigned char nei;	// neighbour id
 };
@@ -349,7 +349,7 @@ bool rcBuildHeightfieldLayers(rcContext* ctx, rcCompactHeightfield& chf,
 	}
 	
 	// Merge non-overlapping regions that are close in height.
-	const unsigned short mergeHeight = (unsigned short)walkableHeight * 4;
+	const unsigned int mergeHeight = (unsigned int)walkableHeight * 4;
 	
 	for (int i = 0; i < nregs; ++i)
 	{

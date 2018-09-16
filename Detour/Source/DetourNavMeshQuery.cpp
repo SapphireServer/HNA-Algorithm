@@ -779,7 +779,7 @@ int dtNavMeshQuery::queryPolygonsInTile(const dtMeshTile* tile, const float* qmi
 		const float qfac = tile->header->bvQuantFactor;
 		
 		// Calculate quantized box
-		unsigned short bmin[3], bmax[3];
+		unsigned int bmin[3], bmax[3];
 		// dtClamp query box to world box.
 		float minx = dtClamp(qmin[0], tbmin[0], tbmax[0]) - tbmin[0];
 		float miny = dtClamp(qmin[1], tbmin[1], tbmax[1]) - tbmin[1];
@@ -788,12 +788,12 @@ int dtNavMeshQuery::queryPolygonsInTile(const dtMeshTile* tile, const float* qmi
 		float maxy = dtClamp(qmax[1], tbmin[1], tbmax[1]) - tbmin[1];
 		float maxz = dtClamp(qmax[2], tbmin[2], tbmax[2]) - tbmin[2];
 		// Quantize
-		bmin[0] = (unsigned short)(qfac * minx) & 0xfffe;
-		bmin[1] = (unsigned short)(qfac * miny) & 0xfffe;
-		bmin[2] = (unsigned short)(qfac * minz) & 0xfffe;
-		bmax[0] = (unsigned short)(qfac * maxx + 1) | 1;
-		bmax[1] = (unsigned short)(qfac * maxy + 1) | 1;
-		bmax[2] = (unsigned short)(qfac * maxz + 1) | 1;
+		bmin[0] = (unsigned int)(qfac * minx) & 0xfffe;
+		bmin[1] = (unsigned int)(qfac * miny) & 0xfffe;
+		bmin[2] = (unsigned int)(qfac * minz) & 0xfffe;
+		bmax[0] = (unsigned int)(qfac * maxx + 1) | 1;
+		bmax[1] = (unsigned int)(qfac * maxy + 1) | 1;
+		bmax[2] = (unsigned int)(qfac * maxz + 1) | 1;
 		
 		// Traverse tree
 		const dtPolyRef base = m_nav->getPolyRefBase(tile);
@@ -2165,7 +2165,7 @@ dtStatus dtNavMeshQuery::getEdgeMidPoint(dtPolyRef from, const dtPoly* fromPoly,
 
 /// @par
 ///
-/// This method is meant to be used for quick, short distance checks.
+/// This method is meant to be used for quick, int distance checks.
 ///
 /// If the path array is too small to hold the result, it will be filled as 
 /// far as possible from the start postion toward the end position.
@@ -2199,7 +2199,7 @@ dtStatus dtNavMeshQuery::getEdgeMidPoint(dtPolyRef from, const dtPoly* fromPoly,
 /// The raycast will search toward the end position along the first floor mesh. 
 /// If it reaches the end position's xz-coordinates it will indicate FLT_MAX
 /// (no wall hit), meaning it reached the end position. This is one example of why
-/// this method is meant for short distance checks.
+/// this method is meant for int distance checks.
 ///
 dtStatus dtNavMeshQuery::raycast(dtPolyRef startRef, const float* startPos, const float* endPos,
 								 const dtQueryFilter* filter,
@@ -2949,7 +2949,7 @@ struct dtSegInterval
 };
 
 static void insertInterval(dtSegInterval* ints, int& nints, const int maxInts,
-						   const short tmin, const short tmax, const dtPolyRef ref)
+						   const int tmin, const int tmax, const dtPolyRef ref)
 {
 	if (nints+1 > maxInts) return;
 	// Find insertion point.

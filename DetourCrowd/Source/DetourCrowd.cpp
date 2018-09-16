@@ -192,7 +192,7 @@ static int getNeighbours(const float* pos, const float height, const float range
 	int n = 0;
 	
 	static const int MAX_NEIS = 32;
-	unsigned short ids[MAX_NEIS];
+	unsigned int ids[MAX_NEIS];
 	int nids = grid->queryItems(pos[0]-range, pos[2]-range,
 								pos[0]+range, pos[2]+range,
 								ids, MAX_NEIS);
@@ -1046,7 +1046,7 @@ void dtCrowd::update(const float dt, dtCrowdAgentDebugInfo* debug)
 		dtCrowdAgent* ag = agents[i];
 		const float* p = ag->npos;
 		const float r = ag->params.radius;
-		m_grid->addItem((unsigned short)i, p[0]-r, p[2]-r, p[0]+r, p[2]+r);
+		m_grid->addItem((unsigned int)i, p[0]-r, p[2]-r, p[0]+r, p[2]+r);
 	}
 	
 	// Get nearby navmesh segments and agents to collide with.
@@ -1088,7 +1088,7 @@ void dtCrowd::update(const float dt, dtCrowdAgentDebugInfo* debug)
 												DT_CROWDAGENT_MAX_CORNERS, m_navquery, &m_filter);
 		
 		// Check to see if the corner after the next corner is directly visible,
-		// and short cut to there.
+		// and int cut to there.
 		if ((ag->params.updateFlags & DT_CROWD_OPTIMIZE_VIS) && ag->ncorners > 0)
 		{
 			const float* target = &ag->cornerVerts[dtMin(1,ag->ncorners-1)*3];

@@ -33,7 +33,7 @@ struct rcHeightPatch
 {
 	inline rcHeightPatch() : data(0), xmin(0), ymin(0), width(0), height(0) {}
 	inline ~rcHeightPatch() { rcFree(data); }
-	unsigned short* data;
+	unsigned int* data;
 	int xmin, ymin, width, height;
 };
 
@@ -194,7 +194,7 @@ static float distToPoly(int nvert, const float* verts, const float* p)
 }
 
 
-static unsigned short getHeight(const float fx, const float fy, const float fz,
+static unsigned int getHeight(const float fx, const float fy, const float fz,
 								const float /*cs*/, const float ics, const float ch,
 								const rcHeightPatch& hp)
 {
@@ -202,7 +202,7 @@ static unsigned short getHeight(const float fx, const float fy, const float fz,
 	int iz = (int)floorf(fz*ics + 0.01f);
 	ix = rcClamp(ix-hp.xmin, 0, hp.width - 1);
 	iz = rcClamp(iz-hp.ymin, 0, hp.height - 1);
-	unsigned short h = hp.data[ix+iz*hp.width];
+	unsigned int h = hp.data[ix+iz*hp.width];
 	if (h == RC_UNSET_HEIGHT)
 	{
 		// Special case when data might be bad.
@@ -214,7 +214,7 @@ static unsigned short getHeight(const float fx, const float fy, const float fz,
 			const int nx = ix+off[i*2+0];
 			const int nz = iz+off[i*2+1];
 			if (nx < 0 || nz < 0 || nx >= hp.width || nz >= hp.height) continue;
-			const unsigned short nh = hp.data[nx+nz*hp.width];
+			const unsigned int nh = hp.data[nx+nz*hp.width];
 			if (nh == RC_UNSET_HEIGHT) continue;
 
 			const float d = fabsf(nh*ch - fy);
@@ -743,8 +743,8 @@ static bool buildPolyDetail(rcContext* ctx, const float* in, const int nin,
 
 
 static void getHeightDataSeedsFromVertices(const rcCompactHeightfield& chf,
-						  const unsigned short* poly, const int npoly,
-						  const unsigned short* verts, const int bs,
+						  const unsigned int* poly, const int npoly,
+						  const unsigned int* verts, const int bs,
 						  rcHeightPatch& hp, rcIntArray& stack)
 {
 	// Floodfill the heightfield to get 2D height data,
@@ -753,7 +753,7 @@ static void getHeightDataSeedsFromVertices(const rcCompactHeightfield& chf,
 	// Note: Reads to the compact heightfield are offset by border size (bs)
 	// since border size offset is already removed from the polymesh vertices.
 	
-	memset(hp.data, 0, sizeof(unsigned short)*hp.width*hp.height);
+	memset(hp.data, 0, sizeof(unsigned int)*hp.width*hp.height);
 	
 	stack.resize(0);
 	
@@ -859,7 +859,7 @@ static void getHeightDataSeedsFromVertices(const rcCompactHeightfield& chf,
 		}
 	}
 
-	memset(hp.data, 0xff, sizeof(unsigned short)*hp.width*hp.height);
+	memset(hp.data, 0xff, sizeof(unsigned int)*hp.width*hp.height);
 
 	// Mark start locations.
 	for (int i = 0; i < stack.size(); i += 3)
@@ -881,8 +881,8 @@ static void getHeightDataSeedsFromVertices(const rcCompactHeightfield& chf,
 
 
 static void getHeightData(const rcCompactHeightfield& chf,
-						  const unsigned short* poly, const int npoly,
-						  const unsigned short* verts, const int bs,
+						  const unsigned int* poly, const int npoly,
+						  const unsigned int* verts, const int bs,
 						  rcHeightPatch& hp, rcIntArray& stack,
 						  int region)
 {
@@ -890,7 +890,7 @@ static void getHeightData(const rcCompactHeightfield& chf,
 	// since border size offset is already removed from the polymesh vertices.
 
 	stack.resize(0);
-	memset(hp.data, 0xff, sizeof(unsigned short)*hp.width*hp.height);
+	memset(hp.data, 0xff, sizeof(unsigned int)*hp.width*hp.height);
 	
 	bool empty = true;
 
@@ -1063,7 +1063,7 @@ bool rcBuildPolyMeshDetail(rcContext* ctx, const rcPolyMesh& mesh, const rcCompa
 	// Find max size for a polygon area.
 	for (int i = 0; i < mesh.npolys; ++i)
 	{
-		const unsigned short* p = &mesh.polys[i*nvp*2];
+		const unsigned int* p = &mesh.polys[i*nvp*2];
 		int& xmin = bounds[i*4+0];
 		int& xmax = bounds[i*4+1];
 		int& ymin = bounds[i*4+2];
@@ -1075,7 +1075,7 @@ bool rcBuildPolyMeshDetail(rcContext* ctx, const rcPolyMesh& mesh, const rcCompa
 		for (int j = 0; j < nvp; ++j)
 		{
 			if(p[j] == RC_MESH_NULL_IDX) break;
-			const unsigned short* v = &mesh.verts[p[j]*3];
+			const unsigned int* v = &mesh.verts[p[j]*3];
 			xmin = rcMin(xmin, (int)v[0]);
 			xmax = rcMax(xmax, (int)v[0]);
 			ymin = rcMin(ymin, (int)v[2]);
@@ -1091,7 +1091,7 @@ bool rcBuildPolyMeshDetail(rcContext* ctx, const rcPolyMesh& mesh, const rcCompa
 		maxhh = rcMax(maxhh, ymax-ymin);
 	}
 	
-	hp.data = (unsigned short*)rcAlloc(sizeof(unsigned short)*maxhw*maxhh, RC_ALLOC_TEMP);
+	hp.data = (unsigned int*)rcAlloc(sizeof(unsigned int)*maxhw*maxhh, RC_ALLOC_TEMP);
 	if (!hp.data)
 	{
 		ctx->log(RC_LOG_ERROR, "rcBuildPolyMeshDetail: Out of memory 'hp.data' (%d).", maxhw*maxhh);
@@ -1128,14 +1128,14 @@ bool rcBuildPolyMeshDetail(rcContext* ctx, const rcPolyMesh& mesh, const rcCompa
 	
 	for (int i = 0; i < mesh.npolys; ++i)
 	{
-		const unsigned short* p = &mesh.polys[i*nvp*2];
+		const unsigned int* p = &mesh.polys[i*nvp*2];
 		
 		// Store polygon vertices for processing.
 		int npoly = 0;
 		for (int j = 0; j < nvp; ++j)
 		{
 			if(p[j] == RC_MESH_NULL_IDX) break;
-			const unsigned short* v = &mesh.verts[p[j]*3];
+			const unsigned int* v = &mesh.verts[p[j]*3];
 			poly[j*3+0] = v[0]*cs;
 			poly[j*3+1] = v[1]*ch;
 			poly[j*3+2] = v[2]*cs;

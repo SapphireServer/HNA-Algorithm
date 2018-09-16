@@ -32,8 +32,8 @@ inline bool overlapBounds(const float* amin, const float* amax, const float* bmi
 	return overlap;
 }
 
-inline bool overlapInterval(unsigned short amin, unsigned short amax,
-							unsigned short bmin, unsigned short bmax)
+inline bool overlapInterval(unsigned int amin, unsigned int amax,
+							unsigned int bmin, unsigned int bmax)
 {
 	if (amax < bmin) return false;
 	if (amin > bmax) return false;
@@ -83,7 +83,7 @@ static void freeSpan(rcHeightfield& hf, rcSpan* ptr)
 }
 
 static void addSpan(rcHeightfield& hf, const int x, const int y,
-					const unsigned short smin, const unsigned short smax,
+					const unsigned int smin, const unsigned int smax,
 					const unsigned char area, const int flagMergeThr)
 {
 	
@@ -162,7 +162,7 @@ static void addSpan(rcHeightfield& hf, const int x, const int y,
 ///
 /// @see rcHeightfield, rcSpan.
 void rcAddSpan(rcContext* /*ctx*/, rcHeightfield& hf, const int x, const int y,
-			   const unsigned short smin, const unsigned short smax,
+			   const unsigned int smin, const unsigned int smax,
 			   const unsigned char area, const int flagMergeThr)
 {
 //	rcAssert(ctx);
@@ -312,8 +312,8 @@ static void rasterizeTri(const float* v0, const float* v1, const float* v2,
 			if (smax > by) smax = by;
 			
 			// Snap the span to the heightfield height grid.
-			unsigned short ismin = (unsigned short)rcClamp((int)floorf(smin * ich), 0, RC_SPAN_MAX_HEIGHT);
-			unsigned short ismax = (unsigned short)rcClamp((int)ceilf(smax * ich), (int)ismin+1, RC_SPAN_MAX_HEIGHT);
+			unsigned int ismin = (unsigned int)rcClamp((int)floorf(smin * ich), 0, RC_SPAN_MAX_HEIGHT);
+			unsigned int ismax = (unsigned int)rcClamp((int)ceilf(smax * ich), (int)ismin+1, RC_SPAN_MAX_HEIGHT);
 			
 			addSpan(hf, x, y, ismin, ismax, area, flagMergeThr);
 		}
@@ -374,7 +374,7 @@ void rcRasterizeTriangles(rcContext* ctx, const float* verts, const int /*nv*/,
 ///
 /// @see rcHeightfield
 void rcRasterizeTriangles(rcContext* ctx, const float* verts, const int /*nv*/,
-						  const unsigned short* tris, const unsigned char* areas, const int nt,
+						  const unsigned int* tris, const unsigned char* areas, const int nt,
 						  rcHeightfield& solid, const int flagMergeThr)
 {
 	rcAssert(ctx);

@@ -41,7 +41,7 @@ struct dtTileCacheObstacle
 	float pos[3], radius, height;
 	dtCompressedTileRef touched[DT_MAX_TOUCHED_TILES];
 	dtCompressedTileRef pending[DT_MAX_TOUCHED_TILES];
-	unsigned short salt;
+	unsigned int salt;
 	unsigned char state;
 	unsigned char ntouched;
 	unsigned char npending;
@@ -64,7 +64,7 @@ struct dtTileCacheParams
 struct dtTileCacheMeshProcess
 {
 	virtual void process(struct dtNavMeshCreateParams* params,
-						 unsigned char* polyAreas, unsigned short* polyFlags) = 0;
+						 unsigned char* polyAreas, unsigned int* polyFlags) = 0;
 };
 
 

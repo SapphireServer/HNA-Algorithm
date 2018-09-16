@@ -365,7 +365,7 @@ dtObstacleRef dtTileCache::addObstacle(const float* pos, const float radius, con
 	if (!ob)
 		return DT_FAILURE | DT_OUT_OF_MEMORY;
 	
-	unsigned short salt = ob->salt;
+	unsigned int salt = ob->salt;
 	memset(ob, 0, sizeof(dtTileCacheObstacle));
 	ob->salt = salt;
 	ob->state = DT_OBSTACLE_PROCESSING;

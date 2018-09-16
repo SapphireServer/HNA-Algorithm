@@ -664,7 +664,7 @@ bool rcBuildContours(rcContext* ctx, rcCompactHeightfield& chf,
 				}
 				for (int dir = 0; dir < 4; ++dir)
 				{
-					unsigned short r = 0;
+					unsigned int r = 0;
 					if (rcGetCon(s, dir) != RC_NOT_CONNECTED)
 					{
 						const int ax = x + rcGetDirOffsetX(dir);
@@ -697,7 +697,7 @@ bool rcBuildContours(rcContext* ctx, rcCompactHeightfield& chf,
 					flags[i] = 0;
 					continue;
 				}
-				const unsigned short reg = chf.spans[i].reg;
+				const unsigned int reg = chf.spans[i].reg;
 				if (!reg || (reg & RC_BORDER_REG))
 					continue;
 				const unsigned char area = chf.areas[i];

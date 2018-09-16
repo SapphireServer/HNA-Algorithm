@@ -56,7 +56,8 @@ public:
 
 		void DestroyEdge()
 		{
-			dtFree(edges);
+         if (edges)
+			   dtFree(edges);
 			numEdges = 0;
 		}
 
@@ -75,7 +76,8 @@ public:
 
 		void DestroyIntraEdge()
 		{
-			dtFree(intraEdges);
+         if (intraEdges)
+			   dtFree(intraEdges);
 			numIntraEdges = 0;
 		}
 	};
@@ -138,7 +140,8 @@ public:
 
 	void Destroy()
 	{
-		dtFree(nodes);
+      if (nodes)
+		   dtFree(nodes);
 		numNodes = 0;
 	}
 };

@@ -27,7 +27,7 @@ static const int DT_TILECACHE_VERSION = 1;
 
 static const unsigned char DT_TILECACHE_NULL_AREA = 0;
 static const unsigned char DT_TILECACHE_WALKABLE_AREA = 63;
-static const unsigned short DT_TILECACHE_NULL_IDX = 0xffff;
+static const unsigned int DT_TILECACHE_NULL_IDX = 0xffff;
 
 struct dtTileCacheLayerHeader
 {
@@ -35,7 +35,7 @@ struct dtTileCacheLayerHeader
 	int version;							///< Data version
 	int tx,ty,tlayer;
 	float bmin[3], bmax[3];
-	unsigned short hmin, hmax;				///< Height min/max range
+	unsigned int hmin, hmax;				///< Height min/max range
 	unsigned char width, height;			///< Dimension of the layer.
 	unsigned char minx, maxx, miny, maxy;	///< Usable sub-region.
 };
@@ -69,9 +69,9 @@ struct dtTileCachePolyMesh
 	int nvp;
 	int nverts;				///< Number of vertices.
 	int npolys;				///< Number of polygons.
-	unsigned short* verts;	///< Vertices of the mesh, 3 elements per vertex.
-	unsigned short* polys;	///< Polygons of the mesh, nvp*2 elements per polygon.
-	unsigned short* flags;	///< Per polygon flags.
+	unsigned int* verts;	///< Vertices of the mesh, 3 elements per vertex.
+	unsigned int* polys;	///< Polygons of the mesh, nvp*2 elements per polygon.
+	unsigned int* flags;	///< Per polygon flags.
 	unsigned char* areas;	///< Area ID of polygons.
 };
 
