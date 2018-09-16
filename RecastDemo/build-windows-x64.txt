@@ -6,3 +6,5 @@ in solution explorer, RecastDemo > Properties > Configuration Manager (at top) >
 edit build/[generator]/RecastDemo.vcxproj and replace
   metis.lib with metis_x64.lib
   SDL/lib/x86 with SDL/lib/x64
+
+after build copy build/[generator]/x64/RecastDemo.exe and SDL/lib/x64 DLLs into RecastDemo/bin
