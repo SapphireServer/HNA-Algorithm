@@ -1355,7 +1355,7 @@ bool rcMergePolyMeshes(rcContext* ctx, rcPolyMesh** meshes, const int nmeshes, r
 			{
 				for (int k = mesh.nvp; k < mesh.nvp * 2; ++k)
 				{
-					if (src[k] & 0x8000 && src[k] != 0xffff)
+					if (src[k] & 0x8000 && src[k] != 0xffffffff)
 					{
 						unsigned int dir = src[k] & 0xf;
 						switch (dir)

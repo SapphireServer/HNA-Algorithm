@@ -28,7 +28,7 @@ class dtProximityGrid
 	struct Item
 	{
 		unsigned int id;
-		short x,y;
+		int x,y;
 		unsigned int next;
 	};
 	Item* m_pool;

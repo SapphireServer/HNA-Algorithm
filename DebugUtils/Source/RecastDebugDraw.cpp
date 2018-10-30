@@ -700,7 +700,7 @@ void duDebugDrawRegionConnections(duDebugDraw* dd, const rcContourSet& cset, con
 		for (int j = 0; j < cont->nverts; ++j)
 		{
 			const int* v = &cont->verts[j*4];
-			//if(v[3] < 65500)
+			if(v[3] < 65500)
 			{
 				const unsigned int a = v[3];
 

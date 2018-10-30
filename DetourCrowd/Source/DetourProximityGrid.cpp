@@ -93,10 +93,10 @@ void dtProximityGrid::clear()
 {
 	memset(m_buckets, 0xff, sizeof(unsigned int)*m_bucketsSize);
 	m_poolHead = 0;
-	m_bounds[0] = 0xffff;
-	m_bounds[1] = 0xffff;
-	m_bounds[2] = -0xffff;
-	m_bounds[3] = -0xffff;
+	m_bounds[0] = 0xffffffff;
+	m_bounds[1] = 0xffffffff;
+	m_bounds[2] = -0xffffffff;
+	m_bounds[3] = -0xffffffff;
 }
 
 void dtProximityGrid::addItem(const unsigned int id,
@@ -123,8 +123,8 @@ void dtProximityGrid::addItem(const unsigned int id,
 				const unsigned int idx = (unsigned int)m_poolHead;
 				m_poolHead++;
 				Item& item = m_pool[idx];
-				item.x = (short)x;
-				item.y = (short)y;
+				item.x = x;
+				item.y = y;
 				item.id = id;
 				item.next = m_buckets[h];
 				m_buckets[h] = idx;
@@ -150,7 +150,7 @@ int dtProximityGrid::queryItems(const float minx, const float miny,
 		{
 			const int h = hashPos2(x, y, m_bucketsSize);
 			unsigned int idx = m_buckets[h];
-			while (idx != 0xffff)
+			while (idx != 0xffffffff)
 			{
 				Item& item = m_pool[idx];
 				if ((int)item.x == x && (int)item.y == y)
@@ -182,7 +182,7 @@ int dtProximityGrid::getItemCountAt(const int x, const int y) const
 	
 	const int h = hashPos2(x, y, m_bucketsSize);
 	unsigned int idx = m_buckets[h];
-	while (idx != 0xffff)
+	while (idx != 0xffffffff)
 	{
 		Item& item = m_pool[idx];
 		if ((int)item.x == x && (int)item.y == y)

@@ -1,4 +1,5 @@
 #include "Navigation.h"
+#include <cstring>
 
 void Navigation::init()
 {
@@ -637,7 +638,7 @@ void Navigation::mergeNodes()
 	idxtype* xadj = (idxtype*)dtAlloc( (parentGraph.numNodes+1)*sizeof(idxtype), DT_ALLOC_TEMP );
 	idxtype* adjncy = (idxtype*)dtAlloc( maxLinkCount*2*sizeof(idxtype), DT_ALLOC_TEMP );
 	idxtype* part = (idxtype*)dtAlloc( parentGraph.numNodes * sizeof(idxtype), DT_ALLOC_TEMP );
-   memset(part, 1, parentGraph.numNodes * sizeof(idxtype));
+   memset(part, 0, parentGraph.numNodes * sizeof(idxtype));
 	//get parameters
 	int xID = 0;
 	int adjID = 0;
@@ -1231,7 +1232,7 @@ void Navigation::checkPartition(int* part, const int numNodes, const int numPart
 
 	for(int i=0; i < numParts; i++)
 	{
-		if( newPart[i] != -1 )
+		if( newPart[i] != -1 || part[i] > numNodes )
 			continue;
 
 		if( !used[ part[i] ] )

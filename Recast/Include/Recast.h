@@ -532,7 +532,7 @@ enum rcBuildContoursFlags
 /// The region id field of a vertex may have several flags applied to it.  So the
 /// fields value can't be used directly.
 /// @see rcContour::verts, rcContour::rverts
-static const int RC_CONTOUR_REG_MASK = 0xffff;
+static const int RC_CONTOUR_REG_MASK = 0xffffffff;
 
 /// An value which indicates an invalid index within a mesh.
 /// @note This does not necessarily indicate an error.

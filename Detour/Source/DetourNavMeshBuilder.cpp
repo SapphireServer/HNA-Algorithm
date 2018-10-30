@@ -27,7 +27,7 @@
 #include "DetourAlloc.h"
 #include "DetourAssert.h"
 
-static unsigned int MESH_NULL_IDX = 0xffff;
+static unsigned int MESH_NULL_IDX = 0xffffffff;
 
 
 struct BVItem
@@ -551,7 +551,7 @@ bool dtCreateNavMeshData(dtNavMeshCreateParams* params, unsigned char** outData,
 			const int ndv = (int)params->detailMeshes[i*4+1];
 			const int nv = navPolys[i].vertCount;
 			dtl.vertBase = (unsigned int)vbase;
-			dtl.vertCount = (unsigned char)(ndv-nv);
+			dtl.vertCount = ndv-nv;
 			dtl.triBase = (unsigned int)params->detailMeshes[i*4+2];
 			dtl.triCount = (unsigned char)params->detailMeshes[i*4+3];
 			// Copy vertices except the first 'nv' verts which are equal to nav poly verts.

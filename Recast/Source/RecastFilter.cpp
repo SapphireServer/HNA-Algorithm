@@ -90,7 +90,7 @@ void rcFilterLedgeSpans(rcContext* ctx, const int walkableHeight, const int walk
 
 	const int w = solid.width;
 	const int h = solid.height;
-	const int MAX_HEIGHT = 0xffff;
+	const int MAX_HEIGHT = 0xffffffff;
 	
 	// Mark border spans.
 	for (int y = 0; y < h; ++y)
@@ -185,7 +185,7 @@ void rcFilterWalkableLowHeightSpans(rcContext* ctx, int walkableHeight, rcHeight
 	
 	const int w = solid.width;
 	const int h = solid.height;
-	const int MAX_HEIGHT = 0xffff;
+	const int MAX_HEIGHT = 0xffffffff;
 	
 	// Remove walkable flag from spans which do not have enough
 	// space above them for the agent to stand there.

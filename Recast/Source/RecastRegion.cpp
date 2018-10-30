@@ -35,7 +35,7 @@ static void calculateDistanceField(rcCompactHeightfield& chf, unsigned int* src,
 	
 	// Init distance and points.
 	for (int i = 0; i < chf.spanCount; ++i)
-		src[i] = 0xffff;
+		src[i] = 0xffffffff;
 	
 	// Mark boundary cells.
 	for (int y = 0; y < h; ++y)
@@ -404,7 +404,7 @@ static unsigned int* expandRegions(int maxIter, unsigned int level,
 			}
 			
 			unsigned int r = srcReg[i];
-			unsigned int d2 = 0xffff;
+			unsigned int d2 = 0xffffffff;
 			const unsigned char area = chf.areas[i];
 			const rcCompactSpan& s = chf.spans[i];
 			for (int dir = 0; dir < 4; ++dir)
@@ -927,7 +927,7 @@ static bool filterSmallRegions(rcContext* ctx, int minRegionArea, int mergeRegio
 			// Small region with more than 1 connection.
 			// Or region which is not connected to a border at all.
 			// Find smallest neighbour region that connects to this one.
-			int smallest = 0xfffffff;
+			unsigned int smallest = 0xffffffff;
 			unsigned int mergeId = reg.id;
 			for (int j = 0; j < reg.connections.size(); ++j)
 			{
@@ -1093,7 +1093,7 @@ static void paintRectRegion(int minx, int maxx, int miny, int maxy, unsigned int
 }
 
 
-static const unsigned int RC_NULL_NEI = 0xffff;
+static const unsigned int RC_NULL_NEI = 0xffffffff;
 
 struct rcSweepSpan
 {

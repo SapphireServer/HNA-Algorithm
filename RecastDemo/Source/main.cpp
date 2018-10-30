@@ -196,8 +196,11 @@ int main(int /*argc*/, char** /*argv*/)
 	
 	glDepthFunc(GL_LEQUAL);
 	
-   GLuint index = glGenLists(1);
-   GLuint index2 = glGenLists(1);
+   GLuint geomList = glGenLists(1);
+   GLuint testList = glGenLists(1);
+   GLuint sampleOverlayList = glGenLists(1);
+
+   glViewport(0, 0, width, height);
 
 	bool done = false;
 	while(!done)
@@ -458,7 +461,6 @@ int main(int /*argc*/, char** /*argv*/)
 		
 		
 		// Update and render
-		glViewport(0, 0, width, height);
 		glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_BLEND);
@@ -518,7 +520,7 @@ int main(int /*argc*/, char** /*argv*/)
 
       if (sample && sample->redraw())
       {
-         glNewList(index, GL_COMPILE);
+         glNewList(geomList, GL_COMPILE);
          glBegin(GL_TRIANGLES);
          sample->handleRender();
          glEnd();
@@ -527,7 +529,7 @@ int main(int /*argc*/, char** /*argv*/)
 
       if (test)
       {
-         glNewList(index2, GL_COMPILE);
+         glNewList(testList, GL_COMPILE);
          glBegin(GL_TRIANGLES);
          test->handleRender();
          glEnd();
@@ -536,24 +538,28 @@ int main(int /*argc*/, char** /*argv*/)
 
       
 		glDisable(GL_FOG);
-		
-      glCallList(index);
-      glCallList(index2);
+
+      glCallList(geomList);
+      glCallList(testList);
+
 
 		// Render GUI
-		glDisable(GL_DEPTH_TEST);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluOrtho2D(0, width, 0, height);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
+      glDisable(GL_DEPTH_TEST);
+      glMatrixMode(GL_PROJECTION);
+      glLoadIdentity();
+      gluOrtho2D(0, width, 0, height);
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
 		
 		mouseOverMenu = false;
 		
 		imguiBeginFrame(mx,my,mbut,mscroll);
-		
+
+      glNewList(sampleOverlayList, GL_COMPILE);
+      glBegin(GL_TRIANGLES);
 		if (sample)
 		{
+
 			sample->handleRenderOverlay((double*)proj, (double*)model, (int*)view);
 		}
 		if (test)
@@ -780,11 +786,6 @@ int main(int /*argc*/, char** /*argv*/)
 				if (sample && geom)
 				{
 					sample->handleMeshChanged(geom);
-               glNewList(index, GL_COMPILE);
-               glBegin(GL_TRIANGLES);
-               sample->handleRender();
-               glEnd();
-               glEndList();
 				}
 
 				if (geom || sample)
@@ -988,10 +989,13 @@ int main(int /*argc*/, char** /*argv*/)
 			glEnd();
 			glLineWidth(1.0f);
 		}
-		
+
 		imguiEndFrame();
 		imguiRenderGLDraw();		
-		
+      glEnd();
+      glEndList();
+      glCallList(sampleOverlayList);
+
 		glEnable(GL_DEPTH_TEST);
       SDL_GL_SwapWindow(window);
 	}

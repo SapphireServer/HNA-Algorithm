@@ -222,7 +222,7 @@ bool rcBuildHeightfieldLayers(rcContext* ctx, rcCompactHeightfield& chf,
 	for (int i = 0; i < nregs; ++i)
 	{
 		regs[i].layerId = 0xff;
-		regs[i].ymin = 0xffff;
+		regs[i].ymin = 0xffffffff;
 		regs[i].ymax = 0;
 	}
 	
