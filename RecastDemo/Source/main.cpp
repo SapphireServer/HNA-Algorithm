@@ -101,13 +101,13 @@ int main(int /*argc*/, char** /*argv*/)
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 //#endif
+	int width = 1536, height = 864;
    SDL_Window* window = nullptr;
    SDL_Renderer* renderer = nullptr;
-   SDL_CreateWindowAndRenderer(1280, 720, SDL_WINDOW_OPENGL, &window, &renderer);
+   SDL_CreateWindowAndRenderer( width, height, SDL_WINDOW_OPENGL, &window, &renderer);
    auto context = SDL_GL_CreateContext(window);
 	bool presentationMode = false;
 
-	int width = 1280, height = 720;
 	//SDL_Surface* screen = 0;
 	/*
 	if (presentationMode)

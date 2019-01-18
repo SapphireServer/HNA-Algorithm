@@ -492,12 +492,12 @@ static void delaunayHull(rcContext* ctx, const int npts, const float* pts,
 
 inline float getJitterX(const int i)
 {
-	return (((i * 0x8da6b343) & 0xffff) / 65535.0f * 2.0f) - 1.0f;
+	return (((i * 0x8da6b343) & 0xffffffff) / 65535.0f * 2.0f) - 1.0f;
 }
 
 inline float getJitterY(const int i)
 {
-	return (((i * 0xd8163841) & 0xffff) / 65535.0f * 2.0f) - 1.0f;
+	return (((i * 0xd8163841) & 0xffffffff) / 65535.0f * 2.0f) - 1.0f;
 }
 
 static bool buildPolyDetail(rcContext* ctx, const float* in, const int nin,

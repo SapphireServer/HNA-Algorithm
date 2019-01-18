@@ -928,7 +928,7 @@ bool rcBuildPolyMesh(rcContext* ctx, rcContourSet& cset, const int nvp, rcPolyMe
 		maxVertsPerCont = rcMax(maxVertsPerCont, cset.conts[i].nverts);
 	}
 	
-	if (maxVertices >= 0xfffe)
+	if (maxVertices >= 0xfffffffe)
 	{
 		ctx->log(RC_LOG_ERROR, "rcBuildPolyMesh: Too many vertices %d.", maxVertices);
 		return false;
